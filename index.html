@@ -73,7 +73,8 @@ nav{position:sticky;top:0;z-index:50;background:rgba(247,250,247,.92);backdrop-f
 .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:1.35rem;color:var(--pine)}
 .logo svg{width:34px;height:34px}
-.nav-links{display:flex;gap:26px;font-weight:500;font-size:.95rem}
+.nav-links{display:flex;flex-wrap:wrap;gap:10px 20px;font-weight:500;font-size:.92rem;row-gap:8px}
+.nav-links a{white-space:nowrap}
 .nav-links a:hover{color:var(--leaf)}
 .nav-cta{display:inline-flex}
 .hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:5px}
@@ -257,15 +258,13 @@ footer a:hover{color:#fff}
   92%{opacity:.5}
   100%{transform:translateY(-108vh) translateX(var(--drift,20px)) scale(1.05);opacity:0}
 }
-/* swimming fish on scroll */
-.swim-fish{position:fixed;top:40%;left:0;z-index:5;width:72px;height:auto;pointer-events:none;opacity:.9;filter:drop-shadow(0 8px 14px rgba(14,59,51,.28));transform:translateX(-100px);will-change:transform}
+@media(prefers-reduced-motion:reduce){.bubble{display:none}.card{transition:none}}
 /* steps + certs subtle depth */
 .step,.cert,.quote{transition:transform .2s ease, box-shadow .2s ease}
 .step:hover,.cert:hover,.quote:hover{transform:translateY(-6px) scale(1.015);box-shadow:0 18px 40px rgba(14,59,51,.16)}
 /* buttons depth press */
 .btn:active{transform:translateY(1px) scale(.98)}
 @media(hover:none){.card::after{display:none}}
-@media(prefers-reduced-motion:reduce){.bubble,.swim-fish{display:none}.card{transition:none}}
 
 
 /* ─────────── FILLET SPOTLIGHT ─────────── */
@@ -284,6 +283,9 @@ footer a:hover{color:#fff}
 
 /* ─────────── B2B SECTION ─────────── */
 .b2b{background:#fff}
+.b2b-photo{position:relative;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-top:24px;aspect-ratio:16/7}
+.b2b-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.b2b-photo-note{position:absolute;bottom:12px;right:12px;background:rgba(14,59,51,.85);color:#fff;font-size:.72rem;font-weight:600;padding:5px 12px;border-radius:999px}
 .b2b-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;margin-top:32px}
 .b2b-card{background:var(--sand);border-radius:var(--radius);padding:24px;border-left:4px solid var(--pine)}
 .b2b-card b{display:block;margin-bottom:6px;font-size:1.02rem}
@@ -433,6 +435,31 @@ input.invalid,select.invalid,textarea.invalid{border-color:#C0392B !important;ba
 .p2p-body b{display:block;font-size:1rem;margin-bottom:4px}
 .p2p-body span{font-size:.85rem;color:#5a7a70}
 .p2p-lead{max-width:44rem}
+/* ─────────── KNOW YOUR FISH CUTS (educational) ─────────── */
+.cuts{background:var(--sand)}
+.cuts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:32px}
+@media(max-width:860px){.cuts-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.cuts-grid{grid-template-columns:1fr}}
+.cut-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.cut-photo{aspect-ratio:4/3;background:linear-gradient(135deg,#DCEDE2,#C7E2D1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#5a8a70;font-size:.78rem;text-align:center;padding:10px}
+.cut-photo img{width:40px;height:40px;object-fit:contain;opacity:.6}
+.cut-body{padding:16px 18px}
+.cut-body b{display:block;font-size:1.02rem;margin-bottom:6px}
+.cut-body p{font-size:.86rem;color:#3d5a52;line-height:1.5;margin-bottom:6px}
+.cut-body .use{font-size:.78rem;color:var(--leaf);font-weight:600}
+.cuts-disclaimer{margin-top:26px;background:#fff;border:1.5px dashed rgba(27,94,58,.25);border-radius:12px;padding:14px 18px;font-size:.82rem;color:#5a7a70}
+.cutguide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:32px}
+@media(max-width:860px){.cutguide-grid{grid-template-columns:1fr}}
+.cutguide-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.cutguide-card img{width:100%;height:auto;display:block}
+.cutguide-label{padding:14px 18px;font-family:var(--display);font-weight:600;font-size:1.15rem;color:var(--pine);text-align:center}
+/* ─────────── TRACEABILITY (educational) ─────────── */
+.trace{background:#fff}
+.trace-flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:30px}
+.trace-step{background:var(--sand);border-radius:12px;padding:14px 18px;font-weight:600;font-size:.88rem;color:var(--pine);flex:1;min-width:140px;text-align:center}
+.trace-arrow{color:var(--leaf);font-weight:700;font-size:1.1rem}
+@media(max-width:760px){.trace-flow{flex-direction:column}.trace-arrow{transform:rotate(90deg)}}
+.trace-note{margin-top:24px;background:var(--sand);border-radius:12px;padding:16px 20px;font-size:.88rem;color:#3d5a52}
 </style>
 
 <!-- Google Analytics 4 -->
@@ -463,6 +490,8 @@ input.invalid,select.invalid,textarea.invalid{border-color:#C0392B !important;ba
       <a href="#certs">Certifications</a>
       <a href="#how">How to Order</a>
       <a href="#pondtoplate">Pond to Plate</a>
+      <a href="#fishcuts">Fish Cuts</a>
+      <a href="#traceability">Traceability</a>
       <a href="#about">About</a>
       <a href="#order">Enquiry</a>
     </div>
@@ -486,6 +515,8 @@ input.invalid,select.invalid,textarea.invalid{border-color:#C0392B !important;ba
       <a href="#how">How to Order</a>
       <a href="#faq">FAQ</a>
       <a href="#pondtoplate">Pond to Plate</a>
+      <a href="#fishcuts">Fish Cuts</a>
+      <a href="#traceability">Traceability</a>
       <a href="#about">About Us</a>
       <a href="#order">Send Enquiry</a>
       <a href="#order" class="btn btn-wa" style="justify-content:center;margin-top:8px">Order on WhatsApp</a>
@@ -728,7 +759,10 @@ input.invalid,select.invalid,textarea.invalid{border-color:#C0392B !important;ba
 
       <div class="p2p-step">
         <span class="num">03</span>
-        <div class="p2p-photo coming"><img src="images/gallery/photo-coming-soon.webp" alt="Cleaning and processing — photo coming soon" loading="lazy"><span data-t="p2p-soon">Photo coming soon</span></div>
+        <div class="p2p-photo" style="position:relative">
+          <img src="images/products/fillet-generic.webp" alt="Fish cleaning and processing" loading="lazy">
+          <span class="b2b-photo-note" style="position:absolute;bottom:8px;right:8px" data-t="p2p-illustrative">Illustrative</span>
+        </div>
         <div class="p2p-body"><b data-t="p2p-3b">Cleaning & Processing</b><span data-t="p2p-3s">Hygienically cleaned and prepared</span></div>
       </div>
 
@@ -787,6 +821,34 @@ input.invalid,select.invalid,textarea.invalid{border-color:#C0392B !important;ba
 </section>
 
 
+<!-- KNOW YOUR FISH CUTS -->
+<section class="cuts" id="fishcuts">
+  <div class="container">
+    <span class="eyebrow" data-t="cuts-eyebrow">Customer education</span>
+    <h2 style="font-size:2rem" data-t="cuts-h2">Know Your Fish Cuts</h2>
+    <p class="lead" data-t="cuts-sub">Understand the different ways fish can be prepared and cut — by species.</p>
+    <div class="cutguide-grid">
+
+      <div class="cutguide-card">
+        <img src="images/fish-cuts/rohu-cut-guide.webp" alt="Rohu — all common cuts guide" loading="lazy">
+        <div class="cutguide-label" data-t="cg-rohu">Rohu</div>
+      </div>
+
+      <div class="cutguide-card">
+        <img src="images/fish-cuts/katla-cut-guide.webp" alt="Katla — all common cuts guide" loading="lazy">
+        <div class="cutguide-label" data-t="cg-katla">Katla</div>
+      </div>
+
+      <div class="cutguide-card">
+        <img src="images/fish-cuts/basa-cut-guide.webp" alt="Basa / Pangasius — all common cuts guide" loading="lazy">
+        <div class="cutguide-label" data-t="cg-basa">Basa / Pangasius</div>
+      </div>
+
+    </div>
+    <div class="cuts-disclaimer" data-t="cuts-disclaimer">Cuts shown here are for customer education. Availability and preparation options may vary by species and order.</div>
+  </div>
+</section>
+
 <!-- RECIPES -->
 <section class="recipes" id="recipes">
   <div class="container">
@@ -807,6 +869,10 @@ input.invalid,select.invalid,textarea.invalid{border-color:#C0392B !important;ba
   <div class="container">
     <span class="eyebrow" data-t="b2b-eyebrow">For businesses</span>
     <h2 style="font-size:2rem" data-t="b2b-h2">Bulk & regular supply</h2>
+    <div class="b2b-photo">
+      <img src="images/operations/wholesale-crates-illustrative.webp" alt="Wholesale fish supply crates — illustrative" loading="lazy">
+      <span class="b2b-photo-note" data-t="b2b-photo-note">Illustrative image</span>
+    </div>
     <div class="b2b-grid">
       <div class="b2b-card"><b data-t="b2b-1b">Restaurants & Hotels</b><span data-t="b2b-1">Fresh or fillet on your kitchen's schedule — daily, alternate days, or weekly. Full traceability for your audits.</span></div>
       <div class="b2b-card"><b data-t="b2b-2b">Retailers & Stores</b><span data-t="b2b-2">Whole fresh fish or branded frozen fillet packs with healthy retail margins. Freezer stock support.</span></div>
@@ -817,20 +883,56 @@ input.invalid,select.invalid,textarea.invalid{border-color:#C0392B !important;ba
       <h3>Wholesale / regular supply enquiry</h3>
       <div class="f-split">
         <div class="f-row"><label for="w-biz">Business name</label><input id="w-biz" type="text" placeholder="Your shop / restaurant / firm"></div>
+        <div class="f-row"><label for="w-contact">Contact person</label><input id="w-contact" type="text" placeholder="Your name"></div>
+      </div>
+      <div class="f-split">
+        <div class="f-row"><label for="w-mobile">Mobile number</label><input id="w-mobile" type="tel" placeholder="10-digit mobile number"></div>
         <div class="f-row"><label for="w-type">Business type</label>
-          <select id="w-type"><option>Restaurant / Hotel</option><option>Retailer / Store</option><option>Wholesaler / Trader</option><option>Processor / Kitchen</option><option>Other</option></select></div>
+          <select id="w-type"><option>Restaurant / Hotel</option><option>Retailer / Store</option><option>Wholesaler / Trader</option><option>Processor / Kitchen</option><option>Caterer</option><option>Supermarket / Distributor</option><option>Other</option></select></div>
       </div>
       <div class="f-split">
         <div class="f-row"><label for="w-prod">Product interest</label>
           <select id="w-prod"><option>Fresh Pangas (whole)</option><option>Frozen Basa Fillet packs</option><option>Frozen Fillet bulk (5kg/10kg)</option><option>Live Pangas</option><option>Multiple / all</option></select></div>
-        <div class="f-row"><label for="w-vol">Approx weekly volume</label><input id="w-vol" type="text" placeholder="e.g. 100 kg / week"></div>
+        <div class="f-row"><label for="w-size">Preferred size</label><input id="w-size" type="text" placeholder="e.g. 1-1.2kg, or ask"></div>
+      </div>
+      <div class="f-split">
+        <div class="f-row"><label for="w-vol">Approx. quantity</label><input id="w-vol" type="text" placeholder="e.g. 100 kg"></div>
+        <div class="f-row"><label for="w-freq">Frequency</label>
+          <select id="w-freq"><option>Daily</option><option>Alternate days</option><option>Weekly</option><option>Bi-weekly</option><option>Monthly</option><option>One-time order</option></select></div>
       </div>
       <div class="f-row"><label for="w-city">City / Area</label><input id="w-city" type="text" placeholder="e.g. Sadar, Nagpur"></div>
+      <div class="f-row"><label for="w-notes">Additional requirements (optional)</label><textarea id="w-notes" rows="2" placeholder="Anything else we should know"></textarea></div>
       <button class="btn btn-wa" onclick="wsEnquiry()" style="width:100%;justify-content:center">Send wholesale enquiry on WhatsApp</button>
+      <p style="font-size:.78rem;color:#5a7a70;margin-top:8px">This form opens WhatsApp with your details pre-filled — nothing is stored on our server. We'll reply directly on WhatsApp.</p>
     </div>
   </div>
 </section>
 
+
+<!-- TRACEABILITY -->
+<section class="trace" id="traceability">
+  <div class="container">
+    <span class="eyebrow" data-t="trace-eyebrow">How we track quality</span>
+    <h2 style="font-size:2rem" data-t="trace-h2">Traceability</h2>
+    <p class="lead" data-t="trace-lead">Every batch of fish from Green Mart follows a documented path — here's how we think about tracking it, from source to your door.</p>
+    <div class="trace-flow">
+      <div class="trace-step" data-t="trace-1">Source / Farm</div>
+      <span class="trace-arrow">→</span>
+      <div class="trace-step" data-t="trace-2">Batch</div>
+      <span class="trace-arrow">→</span>
+      <div class="trace-step" data-t="trace-3">Harvest</div>
+      <span class="trace-arrow">→</span>
+      <div class="trace-step" data-t="trace-4">Processing</div>
+      <span class="trace-arrow">→</span>
+      <div class="trace-step" data-t="trace-5">Packing</div>
+      <span class="trace-arrow">→</span>
+      <div class="trace-step" data-t="trace-6">Storage</div>
+      <span class="trace-arrow">→</span>
+      <div class="trace-step" data-t="trace-7">Dispatch</div>
+    </div>
+    <div class="trace-note" data-t="trace-note">This is currently an informational overview of our process. Batch-level lookup (e.g. via QR code on packaging) is a planned future feature — not yet active.</div>
+  </div>
+</section>
 
 <!-- CERTIFICATIONS -->
 <section class="certs" id="certs">
@@ -1066,26 +1168,6 @@ input.invalid,select.invalid,textarea.invalid{border-color:#C0392B !important;ba
   <a href="#order" class="btn btn-primary">🐟 Get today's rate — Enquire now</a>
 </div>
 
-<svg class="swim-fish" id="swimFish" viewBox="0 0 120 60" aria-hidden="true">
-  <!-- tail -->
-  <path d="M96 30 L116 14 C112 24 112 36 116 46 Z" fill="#1B5E3A"/>
-  <!-- body -->
-  <ellipse cx="58" cy="30" rx="42" ry="19" fill="#3FA060"/>
-  <!-- belly shade -->
-  <path d="M20 34 C36 46 80 46 96 32 C82 42 36 42 20 34 Z" fill="#2E7D4F" opacity=".55"/>
-  <!-- dorsal fin -->
-  <path d="M46 12 C56 4 70 4 78 11 C68 12 56 13 46 12 Z" fill="#1B5E3A"/>
-  <!-- pectoral fin -->
-  <path d="M52 34 C58 42 68 44 74 40 C68 38 58 36 52 34 Z" fill="#1B5E3A" opacity=".8"/>
-  <!-- eye -->
-  <circle cx="28" cy="26" r="3.4" fill="#0E3B33"/>
-  <circle cx="27" cy="25" r="1.1" fill="#fff"/>
-  <!-- gill line -->
-  <path d="M36 18 C33 26 33 34 36 42" stroke="#1B5E3A" stroke-width="2" fill="none" opacity=".5" stroke-linecap="round"/>
-  <!-- mouth -->
-  <path d="M17 31 C19 32.5 21 32.5 23 31" stroke="#0E3B33" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-</svg>
-
 <!-- Floating WhatsApp -->
 <a href="#" id="wa-float" class="wa-float" aria-label="Chat on WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5s.8 1.9.8 2c.1.1.1.3 0 .5l-.4.6c-.1.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.5.3.1.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.4 0 .2 0 .8-.3 1.1z"/></svg>
@@ -1260,33 +1342,62 @@ CONFIG.rates = [                          // 👈 edit your rates here
   }
 })();
 
-/* ── Swimming fish follows scroll ── */
-(function(){
-  const fish = document.getElementById("swimFish");
-  if(!fish) return;
-  let lastX = -100, ticking = false;
-  function update(){
-    const max = Math.max(1, document.body.scrollHeight - innerHeight);
-    const p = Math.min(1, window.scrollY / max);
-    const x = -100 + p * (innerWidth + 200);
-    const bob = Math.sin(p * 18) * 10;               // gentle vertical bob
-    const tilt = Math.cos(p * 18) * 4;               // slight nose tilt with the bob
-    const dir = x >= lastX ? -1 : 1;                 // face direction of travel (fish head is on its left side)
-    fish.style.transform = `translateX(${x}px) translateY(${bob}px) rotate(${tilt}deg) scaleX(${dir})`;
-    fish.style.opacity = p < 0.02 ? 0 : .9;          // hidden at very top
-    lastX = x; ticking = false;
-  }
-  window.addEventListener("scroll", () => {
-    if(!ticking){ ticking = true; requestAnimationFrame(update); }
-  }, {passive:true});
-  update();
-})();
-
 
 
 /* ══════════ FULL-SITE TRANSLATOR (EN / हिंदी / मराठी) ══════════ */
 (function(){
 const D = {
+"Illustrative image":["उदाहरणात्मक चित्र","उदाहरणादाखल चित्र"],
+"Illustrative":["उदाहरणात्मक","उदाहरणादाखल"],
+"Understand the different ways fish can be prepared and cut — by species.":["जानें प्रजाति के अनुसार मछली को कैसे तैयार व काटा जाता है।","प्रजातीनुसार मासा कसा तयार व कापला जातो ते जाणून घ्या."],
+"Rohu":["रोहू","रोहू"],
+"Katla":["कतला","कतला"],
+"Basa / Pangasius":["बासा / पंगास","बासा / पंगास"],
+"Customer education":["ग्राहक शिक्षा","ग्राहक शिक्षण"],
+"Know Your Fish Cuts":["अपनी मछली के कट जानें","तुमच्या माशाचे कट जाणून घ्या"],
+"Understand the different ways fish can be prepared and cut.":["जानें मछली को अलग-अलग तरीकों से कैसे तैयार व काटा जाता है।","मासा वेगवेगळ्या प्रकारे कसा तयार व कापला जातो ते जाणून घ्या."],
+"Photo coming soon":["फोटो जल्द आ रहा है","फोटो लवकरच येत आहे"],
+"Whole Fish":["पूरी मछली","संपूर्ण मासा"],
+"Fish in its complete natural form.":["मछली अपने पूरे प्राकृतिक रूप में।","मासा त्याच्या संपूर्ण नैसर्गिक स्वरूपात."],
+"Best for those who prefer cleaning and cutting themselves":["उन लोगों के लिए बेहतर जो खुद साफ करना व काटना पसंद करते हैं","जे स्वतः स्वच्छ करणे व कापणे पसंत करतात त्यांच्यासाठी उत्तम"],
+"Cleaned Whole":["साफ की हुई पूरी","स्वच्छ केलेला संपूर्ण"],
+"Scales, internal organs and unwanted parts removed while keeping the fish largely whole.":["स्केल, आंतरिक अंग व अनावश्यक हिस्से हटाए गए, पर मछली ज़्यादातर पूरी रहती है।","स्केल, अंतर्गत अवयव व नको असलेले भाग काढले, पण मासा बहुतांशी संपूर्ण राहतो."],
+"Curry Cut":["करी कट","करी कट"],
+"Traditional bone-in pieces commonly used for Indian fish curries.":["पारंपरिक हड्डी सहित टुकड़े, भारतीय फिश करी में आम इस्तेमाल होते हैं।","पारंपरिक हाडांसह तुकडे, भारतीय फिश करीमध्ये सामान्यपणे वापरले जातात."],
+"Most popular for home cooking":["घर के खाने के लिए सबसे लोकप्रिय","घरगुती स्वयंपाकासाठी सर्वाधिक लोकप्रिय"],
+"Steak Cut":["स्टेक कट","स्टेक कट"],
+"Thicker cross-sectional pieces suitable for frying, grilling and curries.":["मोटे टुकड़े, फ्राई, ग्रिल व करी के लिए उपयुक्त।","जाड तुकडे, फ्राय, ग्रिल व करीसाठी योग्य."],
+"Butterfly Cut":["बटरफ्लाई कट","बटरफ्लाय कट"],
+"Fish opened from the centre while keeping both sides connected.":["मछली को बीच से खोला गया, दोनों तरफ जुड़े रहते हैं।","मासा मध्यभागातून उघडलेला, दोन्ही बाजू जोडलेल्या राहतात."],
+"Fillet":["फ़िलेट","फिलेट"],
+"Side portion separated from the main bone structure.":["मुख्य हड्डी संरचना से अलग किया गया साइड हिस्सा।","मुख्य हाडाच्या रचनेपासून वेगळा केलेला बाजूचा भाग."],
+"Skinless Fillet":["बिना छिलके का फ़िलेट","स्किनलेस फिलेट"],
+"Fillet with skin removed for easier preparation.":["आसान तैयारी के लिए छिलका हटाया गया फ़िलेट।","सोप्या तयारीसाठी त्वचा काढलेले फिलेट."],
+"Used for our frozen Basa fillet":["हमारे फ्रोज़न बासा फ़िलेट में इस्तेमाल होता है","आमच्या फ्रोझन बासा फिलेटमध्ये वापरले जाते"],
+"Boneless Cubes":["बिना कांटे के क्यूब्स","बोनलेस क्यूब्स"],
+"Boneless fillet portion cut into convenient cubes.":["बिना कांटे का फ़िलेट हिस्सा सुविधाजनक क्यूब्स में कटा हुआ।","बोनलेस फिलेटचा भाग सोयीस्कर क्यूब्समध्ये कापलेला."],
+"Head & Tail / Portions":["सिर व पूंछ / पोर्शन","डोके व शेपटी / भाग"],
+"Different portions of the fish used depending on regional cooking preferences.":["क्षेत्रीय पसंद के अनुसार मछली के अलग-अलग हिस्से इस्तेमाल होते हैं।","प्रादेशिक आवडीनुसार माशाचे वेगवेगळे भाग वापरले जातात."],
+"Cuts shown here are for customer education. Availability and preparation options may vary by species and order.":["यहां दिखाए गए कट ग्राहक शिक्षा के लिए हैं। प्रजाति व ऑर्डर के अनुसार उपलब्धता व तैयारी में बदलाव हो सकता है।","येथे दाखवलेले कट ग्राहक शिक्षणासाठी आहेत. प्रजाती व ऑर्डरनुसार उपलब्धता व तयारीत बदल होऊ शकतो."],
+"How we track quality":["हम गुणवत्ता कैसे ट्रैक करते हैं","आम्ही गुणवत्ता कशी ट्रॅक करतो"],
+"Traceability":["ट्रेसेबिलिटी","ट्रेसेबिलिटी"],
+"Every batch of fish from Green Mart follows a documented path — here's how we think about tracking it, from source to your door.":["ग्रीन मार्ट की हर बैच एक दस्तावेज़ी रास्ते से गुज़रती है — स्रोत से आपके दरवाज़े तक हम इसे कैसे ट्रैक करते हैं।","ग्रीन मार्टची प्रत्येक बॅच दस्तऐवजीकरण केलेल्या मार्गाने जाते — स्रोतापासून तुमच्या दारापर्यंत आम्ही ते कसे ट्रॅक करतो."],
+"Source / Farm":["स्रोत / फार्म","स्रोत / फार्म"],
+"Batch":["बैच","बॅच"],
+"Harvest":["कटाई","काढणी"],
+"Processing":["प्रोसेसिंग","प्रक्रिया"],
+"Packing":["पैकिंग","पॅकिंग"],
+"Storage":["स्टोरेज","साठवण"],
+"Dispatch":["डिस्पैच","डिस्पॅच"],
+"This is currently an informational overview of our process. Batch-level lookup (e.g. via QR code on packaging) is a planned future feature — not yet active.":["यह फिलहाल हमारी प्रक्रिया का सूचनात्मक विवरण है। बैच-स्तर लुकअप (जैसे पैकेजिंग पर QR कोड) एक भविष्य की योजना है — अभी सक्रिय नहीं है।","ही सध्या आमच्या प्रक्रियेची माहितीपूर्ण माहिती आहे. बॅच-स्तरीय लुकअप (उदा. पॅकेजिंगवरील QR कोड) ही भविष्यातील योजना आहे — अद्याप कार्यान्वित नाही."],
+"Fish Cuts":["फिश कट","फिश कट"],
+"Contact person":["संपर्क व्यक्ति","संपर्क व्यक्ती"],
+"Mobile number":["मोबाइल नंबर","मोबाइल नंबर"],
+"Preferred size":["पसंदीदा साइज़","पसंतीचा आकार"],
+"Frequency":["आवृत्ति","वारंवारता"],
+"Approx. quantity":["अनुमानित मात्रा","अंदाजे प्रमाण"],
+"Additional requirements (optional)":["अतिरिक्त आवश्यकताएं (वैकल्पिक)","अतिरिक्त गरजा (ऐच्छिक)"],
+"This form opens WhatsApp with your details pre-filled — nothing is stored on our server. We'll reply directly on WhatsApp.":["यह फॉर्म आपकी जानकारी के साथ WhatsApp खोलता है — कुछ भी हमारे सर्वर पर सेव नहीं होता। हम सीधे WhatsApp पर जवाब देंगे।","हा फॉर्म तुमची माहिती भरून WhatsApp उघडतो — काहीही आमच्या सर्व्हरवर साठवले जात नाही. आम्ही थेट WhatsApp वर उत्तर देऊ."],
 "Find Us":["हमें ढूंढें","आम्हाला शोधा"],
 "Our Farm — Navegaon Dam & Reservoir":["हमारा फार्म — नवेगांव बांध व जलाशय","आमचे फार्म — नवेगाव धरण व जलाशय"],
 "Our Office — Green Mart Fish & Agri":["हमारा कार्यालय — ग्रीन मार्ट फिश एंड एग्री","आमचे कार्यालय — ग्रीन मार्ट फिश अँड अ‍ॅग्री"],
@@ -1615,13 +1726,21 @@ function confirmDeliv(zone, wt, cost){
 /* ── Wholesale enquiry ── */
 function wsEnquiry(){
   const biz = document.getElementById("w-biz").value.trim();
+  const contact = document.getElementById("w-contact").value.trim();
+  const mobile = document.getElementById("w-mobile").value.trim();
   const type = document.getElementById("w-type").value;
   const prod = document.getElementById("w-prod").value;
+  const size = document.getElementById("w-size").value.trim();
   const vol = document.getElementById("w-vol").value.trim();
+  const freq = document.getElementById("w-freq").value;
   const city = document.getElementById("w-city").value.trim();
-  if(!validate(["w-biz","w-vol","w-city"])){ toast("Please fill business name, weekly volume and city.", "err"); return; }
+  const notes = document.getElementById("w-notes").value.trim();
+  if(!validate(["w-biz","w-contact","w-mobile","w-vol","w-city"])){ toast("Please fill business name, contact person, mobile, quantity and city.", "err"); return; }
   toast("Opening WhatsApp — wholesale enquiry ready ✅", "ok");
-  const msg = `Hi Green Mart! *Wholesale enquiry* 🏢\n\n*Business:* ${biz}\n*Type:* ${type}\n*Product:* ${prod}\n*Approx weekly volume:* ${vol}\n*City/Area:* ${city}\n\nPlease share wholesale rates & supply terms.`;
+  let msg = `Hello Green Mart,\nI'd like a wholesale quotation.\n\n*Business:* ${biz}\n*Contact person:* ${contact}\n*Mobile:* ${mobile}\n*Business type:* ${type}\n*Product:* ${prod}`;
+  if(size) msg += `\n*Preferred size:* ${size}`;
+  msg += `\n*Approx. quantity:* ${vol}\n*Frequency:* ${freq}\n*Location:* ${city}`;
+  if(notes) msg += `\n*Additional requirements:* ${notes}`;
   window.open(waLink(msg), "_blank");
 }
 /* hero direct WA */
