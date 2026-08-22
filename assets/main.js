@@ -162,7 +162,50 @@ function showRatesShimmer(rowCount){
 }
 
 if(CONFIG.sheetCsvUrl){
-  showRatesShimmer(8);
+  let ratesSettled = false;
+  const shimmerTimer = setTimeout(() => {
+    if(!ratesSettled) showRatesShimmer(8);
+  }, 300);
+  fetch(CONFIG.sheetCsvUrl, {cache:"no-store"})
+    .then(r => r.text())
+    .then(csv => {
+      const rows = csv.trim().split(/\r?\n/).map(line => line.split(",").map(c => c.trim()));
+      const rates = [], avail = [], bulk = {};
+      let updated = null;
+      rows.slice(1).forEach(r => {
+        const [section, name, unit, value, available] = r;
+        if(!section || !name) return;
+        const s = section.toLowerCase();
+        if(s === "rate")  rates.push([name, unit || "", value || ""]);
+        if(s === "avail") avail.push([name, (available||"").toLowerCase().startsWith("y")]);
+        if(s === "bulk")  bulk[name] = parseFloat(value) || 0;
+        if(s === "meta" && name.toLowerCase() === "updated") updated = value;
+      });
+      renderRatesTable(rates.length ? rates : CONFIG.rates);
+      if(updated) document.getElementById("ratesDate").textContent = updated;
+      if(avail.length){
+        const box = document.getElementById("availInner");
+        box.querySelectorAll(".avail-item").forEach(e => e.remove());
+        avail.forEach(([name, ok]) => {
+          const sp = document.createElement("span");
+          sp.className = "avail-item";
+          sp.textContent = (ok ? "✅ " : "❌ ") + name;
+          box.appendChild(sp);
+        });
+      }
+      if(Object.keys(bulk).length){
+        CONFIG.bulkRates = bulk;
+        const sel = document.getElementById("c-sp");
+        if(sel){ sel.innerHTML = "";
+          Object.keys(bulk).forEach(k => { const o = document.createElement("option"); o.value = k; o.textContent = k; sel.appendChild(o); });
+        }
+      }
+    })
+    .catch(() => { renderRatesTable(CONFIG.rates); })
+    .finally(() => {
+      ratesSettled = true;
+      clearTimeout(shimmerTimer);
+    });
 }else{
   renderRatesTable(CONFIG.rates);
 }
@@ -171,6 +214,11 @@ document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
 /* ── Scroll reveal ── */
 (function(){
   const els = document.querySelectorAll(".card,.step,.cert,.quote,.faq");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduceMotion){
+    els.forEach(el => el.classList.add("reveal", "in"));
+    return;
+  }
   els.forEach(el => el.classList.add("reveal"));
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
@@ -286,12 +334,37 @@ document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
   closeBtn.setAttribute("aria-label", "Close image");
   closeBtn.textContent = "\u00d7";
 
+  lb.appendChild(prevBtn);
   lb.appendChild(lbImg);
+  lb.appendChild(nextBtn);
   lb.appendChild(closeBtn);
   document.body.appendChild(lb);
 
   let lastFocus = null;
-  const focusable = () => [closeBtn];
+  let currentIndex = 0;
+
+  const prevBtn = document.createElement("button");
+  prevBtn.type = "button";
+  prevBtn.className = "lightbox-nav lightbox-prev";
+  prevBtn.setAttribute("aria-label", "Previous image");
+  prevBtn.textContent = "\u2039";
+
+  const nextBtn = document.createElement("button");
+  nextBtn.type = "button";
+  nextBtn.className = "lightbox-nav lightbox-next";
+  nextBtn.setAttribute("aria-label", "Next image");
+  nextBtn.textContent = "\u203a";
+
+  const focusable = () => [prevBtn, nextBtn, closeBtn];
+
+  function showAt(index){
+    currentIndex = (index + triggers.length) % triggers.length;
+    const trigger = triggers[currentIndex];
+    lbImg.src = trigger.img.currentSrc || trigger.img.src;
+    lbImg.alt = trigger.img.alt || "";
+    prevBtn.style.visibility = triggers.length > 1 ? "visible" : "hidden";
+    nextBtn.style.visibility = triggers.length > 1 ? "visible" : "hidden";
+  }
 
   function trapFocus(e){
     if(e.key !== "Tab") return;
@@ -309,8 +382,8 @@ document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
 
   function openLightbox(trigger){
     lastFocus = trigger.item;
-    lbImg.src = trigger.img.currentSrc || trigger.img.src;
-    lbImg.alt = trigger.img.alt || "";
+    currentIndex = triggers.indexOf(trigger);
+    showAt(currentIndex);
     lb.hidden = false;
     lb.setAttribute("aria-hidden", "false");
     if(reduceMotion) lb.classList.add("is-open");
@@ -338,9 +411,14 @@ document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
 
   function onKeydown(e){
     if(e.key === "Escape") closeLightbox();
+    if(triggers.length < 2) return;
+    if(e.key === "ArrowLeft") showAt(currentIndex - 1);
+    if(e.key === "ArrowRight") showAt(currentIndex + 1);
   }
 
   closeBtn.addEventListener("click", closeLightbox);
+  prevBtn.addEventListener("click", () => showAt(currentIndex - 1));
+  nextBtn.addEventListener("click", () => showAt(currentIndex + 1));
   lb.addEventListener("click", e => {
     if(e.target === lb) closeLightbox();
   });
@@ -359,7 +437,7 @@ document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
 
 /* ── 3D card tilt (desktop pointers only) ── */
 (function(){
-  if(matchMedia("(hover:none)").matches) return;
+  if(matchMedia("(hover:none)").matches || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   document.querySelectorAll(".card").forEach(card => {
     card.addEventListener("mousemove", e => {
       const r = card.getBoundingClientRect();
@@ -379,7 +457,7 @@ document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
 
 /* ── Hero photo parallax (mouse) ── */
 (function(){
-  if(matchMedia("(hover:none)").matches) return;
+  if(matchMedia("(hover:none)").matches || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const hero = document.querySelector(".hero");
   if(!hero) return;
   hero.addEventListener("mousemove", e => {
@@ -917,50 +995,7 @@ function confirmBulk(sp, kg, total){
 const rb = document.getElementById("reorderBtn");
 if(rb) rb.href = waLink("Hi Green Mart! 🔁 Repeat my usual order please — confirm today's rate.");
 
-/* ══ LIVE DATA FROM GOOGLE SHEET (edit sheet → site updates, no redeploy) ══ */
-(function(){
-  if(!CONFIG.sheetCsvUrl) return;
-  fetch(CONFIG.sheetCsvUrl, {cache:"no-store"})
-    .then(r => r.text())
-    .then(csv => {
-      const rows = csv.trim().split(/\r?\n/).map(line => line.split(",").map(c => c.trim()));
-      const rates = [], avail = [], bulk = {};
-      let updated = null;
-      rows.slice(1).forEach(r => {
-        const [section, name, unit, value, available] = r;
-        if(!section || !name) return;
-        const s = section.toLowerCase();
-        if(s === "rate")  rates.push([name, unit || "", value || ""]);
-        if(s === "avail") avail.push([name, (available||"").toLowerCase().startsWith("y")]);
-        if(s === "bulk")  bulk[name] = parseFloat(value) || 0;
-        if(s === "meta" && name.toLowerCase() === "updated") updated = value;
-      });
-      /* rebuild rates table */
-      if(rates.length) renderRatesTable(rates);
-      else renderRatesTable(CONFIG.rates);
-      if(updated) document.getElementById("ratesDate").textContent = updated;
-      /* rebuild availability strip */
-      if(avail.length){
-        const box = document.getElementById("availInner");
-        box.querySelectorAll(".avail-item").forEach(e => e.remove());
-        avail.forEach(([name, ok]) => {
-          const sp = document.createElement("span");
-          sp.className = "avail-item";
-          sp.textContent = (ok ? "✅ " : "❌ ") + name;
-          box.appendChild(sp);
-        });
-      }
-      /* rebuild bulk calculator */
-      if(Object.keys(bulk).length){
-        CONFIG.bulkRates = bulk;
-        const sel = document.getElementById("c-sp");
-        if(sel){ sel.innerHTML = "";
-          Object.keys(bulk).forEach(k => { const o = document.createElement("option"); o.value = k; o.textContent = k; sel.appendChild(o); });
-        }
-      }
-    })
-    .catch(() => { renderRatesTable(CONFIG.rates); });
-})();
+/* ══ LIVE DATA FROM GOOGLE SHEET — rates load handled above when sheetCsvUrl is set ══ */
 
 /* ── Wire up buttons (moved off inline onclick= for CSP compliance) ── */
 document.querySelectorAll("[data-order]").forEach(btn => {
