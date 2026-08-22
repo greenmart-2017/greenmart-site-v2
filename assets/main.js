@@ -33,14 +33,6 @@ document.getElementById("orderForm").addEventListener("submit", function(e){
     return;
   }
 
-  try {
-    const body = new URLSearchParams({
-      "form-name": "wholesale-enquiry",
-      product, qty, type, name, location: loc, notes, "bot-field": ""
-    });
-    fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body }).catch(() => {});
-  } catch(e) {}
-
   let msg = `Hi ${CONFIG.businessName}! I want to place an enquiry 🐟\n\n` +
             `*Product:* ${product}\n` +
             `*Quantity:* ${qty}\n` +
@@ -49,6 +41,21 @@ document.getElementById("orderForm").addEventListener("submit", function(e){
             `*Delivery location:* ${loc}`;
   if(notes) msg += `\n*Notes:* ${notes}`;
   msg += `\n\nPlease share today's rate. Thank you!`;
+
+  /* Silent backup copy to Netlify Forms — so the enquiry is never lost even if
+     WhatsApp fails to open (popup blocker, no WhatsApp linked, etc.). Best-effort:
+     never blocks or delays the WhatsApp flow below. */
+  try{
+    const body = new URLSearchParams({
+      "form-name": "wholesale-enquiry",
+      product, qty, type, name, location: loc, notes
+    }).toString();
+    fetch("/", {
+      method: "POST",
+      headers: {"Content-Type": "application/x-www-form-urlencoded"},
+      body
+    }).catch(()=>{ /* silent — WhatsApp remains the primary path */ });
+  }catch(err){ /* silent */ }
 
   window.open(waLink(msg), "_blank", "noopener,noreferrer");
   toast("Opening WhatsApp with your enquiry… ✅", "ok");
@@ -122,7 +129,7 @@ CONFIG.rates = [                          // 👈 edit your rates here
   const tb = document.querySelector("#ratesTable tbody");
   CONFIG.rates.forEach(r => {
     const tr = document.createElement("tr");
-    [r[0], r[1], r[2]].forEach(text => { const td = document.createElement("td"); td.textContent = text; tr.appendChild(td); });
+    tr.innerHTML = `<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td>`;
     tb.appendChild(tr);
   });
   document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
@@ -568,18 +575,18 @@ function estimate(){
   else { cost = "Quote on WhatsApp"; note = "Insulated/reefer transport — we'll quote for your city"; }
   const zoneName = document.getElementById("d-zone").selectedOptions[0].text;
   out.classList.add("show");
-  out.textContent = "";
-  const bCost = document.createElement("b");
-  bCost.textContent = cost;
-  out.appendChild(bCost);
+  out.innerHTML = "";
+  const b = document.createElement("b");
+  b.textContent = cost;
+  out.appendChild(b);
   out.appendChild(document.createTextNode(note));
   out.appendChild(document.createElement("br"));
-  const btnDeliv = document.createElement("button");
-  btnDeliv.className = "btn btn-wa";
-  btnDeliv.style.cssText = "margin-top:12px;padding:10px 18px;font-size:.88rem";
-  btnDeliv.textContent = "Confirm on WhatsApp";
-  btnDeliv.addEventListener("click", () => confirmDeliv(zoneName.replace(/'/g,""), wt, cost));
-  out.appendChild(btnDeliv);
+  const btn = document.createElement("button");
+  btn.className = "btn btn-wa";
+  btn.style.cssText = "margin-top:12px;padding:10px 18px;font-size:.88rem";
+  btn.textContent = "Confirm on WhatsApp";
+  btn.addEventListener("click", () => confirmDeliv(zoneName, wt, cost));
+  out.appendChild(btn);
 }
 function confirmDeliv(zone, wt, cost){
   const msg = `Hi Green Mart! Delivery estimate confirm karna hai 🚚\n\n*Area:* ${zone}\n*Quantity:* ${wt} kg\n*Estimated delivery:* ${cost}\n\nPlease confirm rate + delivery for my exact location.`;
@@ -676,18 +683,18 @@ function bulkCalc(){
   const rate = CONFIG.bulkRates[sp];
   const total = Math.round(rate * kg);
   out.classList.add("show");
-  out.textContent = "";
-  const bTot = document.createElement("b");
-  bTot.textContent = `≈ ₹${total.toLocaleString("en-IN")}`;
-  out.appendChild(bTot);
+  out.innerHTML = "";
+  const b = document.createElement("b");
+  b.textContent = `≈ ₹${total.toLocaleString("en-IN")}`;
+  out.appendChild(b);
   out.appendChild(document.createTextNode(`${sp} · ${kg} kg × avg ₹${rate}/kg`));
   out.appendChild(document.createElement("br"));
-  const btnBulk = document.createElement("button");
-  btnBulk.className = "btn btn-wa";
-  btnBulk.style.cssText = "margin-top:12px;padding:10px 18px;font-size:.88rem";
-  btnBulk.textContent = "Confirm rate on WhatsApp";
-  btnBulk.addEventListener("click", () => confirmBulk(sp, kg, total));
-  out.appendChild(btnBulk);
+  const btn = document.createElement("button");
+  btn.className = "btn btn-wa";
+  btn.style.cssText = "margin-top:12px;padding:10px 18px;font-size:.88rem";
+  btn.textContent = "Confirm rate on WhatsApp";
+  btn.addEventListener("click", () => confirmBulk(sp, kg, total));
+  out.appendChild(btn);
 }
 function confirmBulk(sp, kg, total){
   const msg = `Hi Green Mart! Bulk order estimate confirm karna hai 🐟\n\n*Species:* ${sp}\n*Quantity:* ${kg} kg\n*Estimated:* ≈ ₹${total.toLocaleString("en-IN")}\n\nPlease confirm today's actual rate & size grades.`;
@@ -722,7 +729,11 @@ if(rb) rb.href = waLink("Hi Green Mart! 🔁 Repeat my usual order please — co
         tb.innerHTML = "";
         rates.forEach(r => {
           const tr = document.createElement("tr");
-          [r[0], r[1], r[2]].forEach(text => { const td = document.createElement("td"); td.textContent = text; tr.appendChild(td); });
+          [r[0], r[1], r[2]].forEach(val => {
+            const td = document.createElement("td");
+            td.textContent = val;
+            tr.appendChild(td);
+          });
           tb.appendChild(tr);
         });
       }
@@ -750,15 +761,13 @@ if(rb) rb.href = waLink("Hi Green Mart! 🔁 Repeat my usual order please — co
     .catch(() => { /* sheet unreachable — built-in values stay */ });
 })();
 
-document.querySelectorAll("[data-order-product]").forEach(el => {
-  el.addEventListener("click", () => orderProduct(el.getAttribute("data-order-product")));
+/* ── Wire up buttons (moved off inline onclick= for CSP compliance) ── */
+document.querySelectorAll("[data-order]").forEach(btn => {
+  btn.addEventListener("click", () => orderProduct(btn.dataset.order));
 });
-document.querySelectorAll("[data-bulk-calc]").forEach(el => {
-  el.addEventListener("click", () => bulkCalc());
-});
-document.querySelectorAll("[data-estimate]").forEach(el => {
-  el.addEventListener("click", () => estimate());
-});
-document.querySelectorAll("[data-ws-enquiry]").forEach(el => {
-  el.addEventListener("click", () => wsEnquiry());
-});
+const bulkCalcBtn = document.getElementById("btn-bulk-calc");
+if(bulkCalcBtn) bulkCalcBtn.addEventListener("click", bulkCalc);
+const deliveryEstBtn = document.getElementById("btn-delivery-estimate");
+if(deliveryEstBtn) deliveryEstBtn.addEventListener("click", estimate);
+const wholesaleBtn = document.getElementById("btn-wholesale-enquiry");
+if(wholesaleBtn) wholesaleBtn.addEventListener("click", wsEnquiry);
