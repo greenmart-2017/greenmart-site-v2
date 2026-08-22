@@ -11,6 +11,9 @@ REQUIRED=(
   assets/product-i18n.js
   assets/product-page.js
   products/pangas.html
+  assets/product.css
+  assets/product-i18n.js
+  pangas.html
   robots.txt
   sitemap.xml
 )
