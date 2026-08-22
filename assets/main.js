@@ -125,15 +125,48 @@ CONFIG.rates = [                          // 👈 edit your rates here
   ["Frozen Basa Fillet — 250g pack", "per pack", "Launching soon"],
   ["Frozen Fillet — bulk 5kg/10kg", "per kg", "Ask on WhatsApp"]
 ];
-(function(){
+
+function renderRatesTable(rows){
   const tb = document.querySelector("#ratesTable tbody");
-  CONFIG.rates.forEach(r => {
+  if(!tb) return;
+  tb.classList.remove("is-loading");
+  tb.innerHTML = "";
+  rows.forEach(r => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td>`;
+    [r[0], r[1], r[2]].forEach(val => {
+      const td = document.createElement("td");
+      td.textContent = val;
+      tr.appendChild(td);
+    });
     tb.appendChild(tr);
   });
-  document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
-})();
+}
+
+function showRatesShimmer(rowCount){
+  const tb = document.querySelector("#ratesTable tbody");
+  if(!tb) return;
+  tb.classList.add("is-loading");
+  tb.innerHTML = "";
+  for(let i = 0; i < rowCount; i++){
+    const tr = document.createElement("tr");
+    for(let j = 0; j < 3; j++){
+      const td = document.createElement("td");
+      const bar = document.createElement("span");
+      bar.className = "rates-shimmer-bar";
+      bar.setAttribute("aria-hidden", "true");
+      td.appendChild(bar);
+      tr.appendChild(td);
+    }
+    tb.appendChild(tr);
+  }
+}
+
+if(CONFIG.sheetCsvUrl){
+  showRatesShimmer(8);
+}else{
+  renderRatesTable(CONFIG.rates);
+}
+document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
 
 /* ── Scroll reveal ── */
 (function(){
@@ -143,6 +176,185 @@ CONFIG.rates = [                          // 👈 edit your rates here
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
   }, {threshold:.12});
   els.forEach(el => io.observe(el));
+})();
+
+/* ── Section scroll-reveal ── */
+(function(){
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const sections = document.querySelectorAll("section[id]");
+  if(!sections.length) return;
+  if(reduceMotion){
+    sections.forEach(s => s.classList.add("section-reveal", "is-visible"));
+    return;
+  }
+  sections.forEach(s => s.classList.add("section-reveal"));
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add("is-visible");
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.15});
+  sections.forEach(s => io.observe(s));
+})();
+
+/* ── About Us stat counters ── */
+(function(){
+  const statsBlock = document.querySelector(".about-stats");
+  if(!statsBlock) return;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const statEls = statsBlock.querySelectorAll(".stat b");
+  if(reduceMotion) return;
+
+  function animateStat(el, duration){
+    const text = el.textContent.trim();
+    const match = text.match(/^(\d+)(.*)$/);
+    if(!match) return;
+    const target = parseInt(match[1], 10);
+    const suffix = match[2] || "";
+    const start = performance.now();
+    function frame(now){
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if(t < 1) requestAnimationFrame(frame);
+      else el.textContent = target + suffix;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  let played = false;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting && !played){
+        played = true;
+        statEls.forEach(el => animateStat(el, 1200));
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.15});
+  io.observe(statsBlock);
+})();
+
+/* ── Sticky nav shrink-on-scroll ── */
+(function(){
+  const nav = document.querySelector("nav");
+  if(!nav) return;
+  let ticking = false;
+  function update(){
+    nav.classList.toggle("nav-compact", window.scrollY > 60);
+    ticking = false;
+  }
+  window.addEventListener("scroll", () => {
+    if(!ticking){
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  }, {passive: true});
+  update();
+})();
+
+/* ── Gallery lightbox ── */
+(function(){
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const triggers = [];
+  document.querySelectorAll(".gal-item").forEach(item => {
+    const img = item.querySelector("img");
+    if(!img) return;
+    item.classList.add("gal-item--lightbox");
+    if(!item.hasAttribute("tabindex")) item.setAttribute("tabindex", "0");
+    item.setAttribute("role", "button");
+    item.setAttribute("aria-label", img.alt ? `View larger: ${img.alt}` : "View larger image");
+    triggers.push({item, img});
+  });
+  if(!triggers.length) return;
+
+  const lb = document.createElement("div");
+  lb.className = "lightbox";
+  lb.setAttribute("role", "dialog");
+  lb.setAttribute("aria-modal", "true");
+  lb.setAttribute("aria-hidden", "true");
+  lb.hidden = true;
+
+  const lbImg = document.createElement("img");
+  lbImg.alt = "";
+
+  const closeBtn = document.createElement("button");
+  closeBtn.type = "button";
+  closeBtn.className = "lightbox-close";
+  closeBtn.setAttribute("aria-label", "Close image");
+  closeBtn.textContent = "\u00d7";
+
+  lb.appendChild(lbImg);
+  lb.appendChild(closeBtn);
+  document.body.appendChild(lb);
+
+  let lastFocus = null;
+  const focusable = () => [closeBtn];
+
+  function trapFocus(e){
+    if(e.key !== "Tab") return;
+    const els = focusable();
+    const first = els[0];
+    const last = els[els.length - 1];
+    if(e.shiftKey && document.activeElement === first){
+      e.preventDefault();
+      last.focus();
+    }else if(!e.shiftKey && document.activeElement === last){
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  function openLightbox(trigger){
+    lastFocus = trigger.item;
+    lbImg.src = trigger.img.currentSrc || trigger.img.src;
+    lbImg.alt = trigger.img.alt || "";
+    lb.hidden = false;
+    lb.setAttribute("aria-hidden", "false");
+    if(reduceMotion) lb.classList.add("is-open");
+    else requestAnimationFrame(() => lb.classList.add("is-open"));
+    document.body.style.overflow = "hidden";
+    closeBtn.focus();
+    document.addEventListener("keydown", onKeydown);
+    lb.addEventListener("keydown", trapFocus);
+  }
+
+  function closeLightbox(){
+    lb.classList.remove("is-open");
+    lb.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    document.removeEventListener("keydown", onKeydown);
+    lb.removeEventListener("keydown", trapFocus);
+    const restore = lastFocus;
+    lastFocus = null;
+    lbImg.removeAttribute("src");
+    window.setTimeout(() => {
+      lb.hidden = true;
+      if(restore) restore.focus();
+    }, reduceMotion ? 0 : 250);
+  }
+
+  function onKeydown(e){
+    if(e.key === "Escape") closeLightbox();
+  }
+
+  closeBtn.addEventListener("click", closeLightbox);
+  lb.addEventListener("click", e => {
+    if(e.target === lb) closeLightbox();
+  });
+
+  triggers.forEach(({item, img}) => {
+    const open = () => openLightbox({item, img});
+    item.addEventListener("click", open);
+    item.addEventListener("keydown", e => {
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        open();
+      }
+    });
+  });
 })();
 
 /* ── 3D card tilt (desktop pointers only) ── */
@@ -724,19 +936,8 @@ if(rb) rb.href = waLink("Hi Green Mart! 🔁 Repeat my usual order please — co
         if(s === "meta" && name.toLowerCase() === "updated") updated = value;
       });
       /* rebuild rates table */
-      if(rates.length){
-        const tb = document.querySelector("#ratesTable tbody");
-        tb.innerHTML = "";
-        rates.forEach(r => {
-          const tr = document.createElement("tr");
-          [r[0], r[1], r[2]].forEach(val => {
-            const td = document.createElement("td");
-            td.textContent = val;
-            tr.appendChild(td);
-          });
-          tb.appendChild(tr);
-        });
-      }
+      if(rates.length) renderRatesTable(rates);
+      else renderRatesTable(CONFIG.rates);
       if(updated) document.getElementById("ratesDate").textContent = updated;
       /* rebuild availability strip */
       if(avail.length){
@@ -758,7 +959,7 @@ if(rb) rb.href = waLink("Hi Green Mart! 🔁 Repeat my usual order please — co
         }
       }
     })
-    .catch(() => { /* sheet unreachable — built-in values stay */ });
+    .catch(() => { renderRatesTable(CONFIG.rates); });
 })();
 
 /* ── Wire up buttons (moved off inline onclick= for CSP compliance) ── */
