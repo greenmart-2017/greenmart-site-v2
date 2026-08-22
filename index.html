@@ -54,10 +54,11 @@
   --body:'Outfit',sans-serif;
   --radius:14px;
   --shadow:0 8px 30px rgba(14,59,51,.10);
+  --scroll-offset:80px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-section[id],header[id]{scroll-margin-top:76px}
+html{scroll-behavior:smooth;scroll-padding-top:var(--scroll-offset)}
+section[id],header[id]{scroll-margin-top:var(--scroll-offset)}
 body{font-family:var(--body);color:var(--ink);background:var(--foam);line-height:1.6;font-weight:400}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
@@ -524,6 +525,16 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
 .lightbox-next{right:18px}
 .lightbox-nav:focus-visible{outline:3px solid var(--aqua);outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.lightbox,.lightbox img{transition:none}.lightbox.is-open img{transform:none}}
+
+/* ── Accessibility: reduced-motion overrides ── */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .btn:hover,.btn:active{transform:none}
+  .step:hover,.cert:hover,.quote:hover{transform:none;box-shadow:inherit}
+  .card:hover,.card:focus-within{transform:none}
+  nav,.nav-inner,nav .logo,nav .logo img{transition:none}
+  .toast{animation:none}
+}
 </style>
 
 <!-- Google Analytics 4 -->
@@ -628,7 +639,7 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
 
 
 <!-- PRODUCTS -->
-<section id="products">
+<section id="products" tabindex="-1">
   <div class="container">
     <span class="eyebrow">What we supply</span>
     <h2 style="font-size:2rem">Products & Supply</h2>
@@ -645,7 +656,8 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
             <a href="products/pangas.html" style="font-size:.82rem;font-weight:600;color:var(--leaf);text-decoration:underline">Pangas →</a>
             <a href="products/rohu.html" style="font-size:.82rem;font-weight:600;color:var(--leaf);text-decoration:underline">Rohu →</a>
             <a href="products/katla.html" style="font-size:.82rem;font-weight:600;color:var(--leaf);text-decoration:underline">Katla →</a>
-            <a href="products/mrigal-tilapia-carp.html" style="font-size:.82rem;font-weight:600;color:var(--leaf);text-decoration:underline">More →</a>
+            <a href="products/mrigal-tilapia-carp.html" style="font-size:.82rem;font-weight:600;color:var(--leaf);text-decoration:underline">More carp →</a>
+            <a href="products/murrel-catfish.html" style="font-size:.82rem;font-weight:600;color:var(--leaf);text-decoration:underline">Murrel →</a>
           </div>
           <button class="btn btn-wa" data-order="Fresh fish (Pangas/Rohu/Katla, size-graded)">Enquire</button>
         </div>

@@ -214,6 +214,11 @@ document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
 /* ── Scroll reveal ── */
 (function(){
   const els = document.querySelectorAll(".card,.step,.cert,.quote,.faq");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduceMotion){
+    els.forEach(el => el.classList.add("reveal", "in"));
+    return;
+  }
   els.forEach(el => el.classList.add("reveal"));
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
