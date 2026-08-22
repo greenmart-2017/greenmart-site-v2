@@ -12,4 +12,22 @@ document.querySelectorAll(".ftab").forEach(tab => {
   });
 });
 
+/* ── Sticky nav shrink-on-scroll ── */
+(function(){
+  const nav = document.querySelector("nav");
+  if(!nav) return;
+  let ticking = false;
+  function update(){
+    nav.classList.toggle("nav-compact", window.scrollY > 60);
+    ticking = false;
+  }
+  window.addEventListener("scroll", () => {
+    if(!ticking){
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  }, {passive: true});
+  update();
+})();
+
 /* ── Language translator (EN/HI/MR) — see /assets/product-i18n.js ── */
