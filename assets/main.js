@@ -305,6 +305,7 @@ document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
 
 /* ── Gallery lightbox ── */
 (function(){
+  try {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const triggers = [];
   document.querySelectorAll(".gal-item").forEach(item => {
@@ -334,15 +335,6 @@ document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
   closeBtn.setAttribute("aria-label", "Close image");
   closeBtn.textContent = "\u00d7";
 
-  lb.appendChild(prevBtn);
-  lb.appendChild(lbImg);
-  lb.appendChild(nextBtn);
-  lb.appendChild(closeBtn);
-  document.body.appendChild(lb);
-
-  let lastFocus = null;
-  let currentIndex = 0;
-
   const prevBtn = document.createElement("button");
   prevBtn.type = "button";
   prevBtn.className = "lightbox-nav lightbox-prev";
@@ -354,6 +346,15 @@ document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
   nextBtn.className = "lightbox-nav lightbox-next";
   nextBtn.setAttribute("aria-label", "Next image");
   nextBtn.textContent = "\u203a";
+
+  lb.appendChild(prevBtn);
+  lb.appendChild(lbImg);
+  lb.appendChild(nextBtn);
+  lb.appendChild(closeBtn);
+  document.body.appendChild(lb);
+
+  let lastFocus = null;
+  let currentIndex = 0;
 
   const focusable = () => [prevBtn, nextBtn, closeBtn];
 
@@ -433,6 +434,7 @@ document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
       }
     });
   });
+  } catch(err) {}
 })();
 
 /* ── 3D card tilt (desktop pointers only) ── */
@@ -1007,3 +1009,57 @@ const deliveryEstBtn = document.getElementById("btn-delivery-estimate");
 if(deliveryEstBtn) deliveryEstBtn.addEventListener("click", estimate);
 const wholesaleBtn = document.getElementById("btn-wholesale-enquiry");
 if(wholesaleBtn) wholesaleBtn.addEventListener("click", wsEnquiry);
+
+/* ── Quick quantity chips (order form) ── */
+(function(){
+  try {
+    const qtyInput = document.getElementById("f-qty");
+    const chips = document.querySelectorAll(".qty-chip");
+    if(!qtyInput || !chips.length) return;
+    chips.forEach(chip => {
+      chip.addEventListener("click", () => {
+        const val = chip.dataset.qty;
+        chips.forEach(c => c.classList.remove("is-selected"));
+        chip.classList.add("is-selected");
+        if(val === "__custom__"){
+          qtyInput.classList.add("is-open");
+          qtyInput.value = "";
+          qtyInput.focus();
+        } else {
+          qtyInput.classList.remove("is-open");
+          qtyInput.value = val;
+          qtyInput.classList.remove("invalid");
+        }
+      });
+    });
+    qtyInput.addEventListener("input", () => {
+      if(!qtyInput.classList.contains("is-open")) return;
+      chips.forEach(c => c.classList.toggle("is-selected", c.dataset.qty === "__custom__"));
+    });
+  } catch(err) {}
+})();
+
+/* ── Nav scroll-spy (highlight active section link) ── */
+(function(){
+  try {
+    const sectionIds = ["products","rates","wholesale","certs","order","delivery","how","pondtoplate","about","fishcuts","traceability","gallery"];
+    const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+    if(!sections.length) return;
+    const links = document.querySelectorAll('nav a[href^="#"]');
+    const byId = {};
+    links.forEach(a => {
+      const id = a.getAttribute("href").replace(/^#/, "");
+      if(!id) return;
+      (byId[id] = byId[id] || []).push(a);
+    });
+    function setActive(id){
+      links.forEach(a => a.classList.remove("is-active"));
+      (byId[id] || []).forEach(a => a.classList.add("is-active"));
+    }
+    const io = new IntersectionObserver(entries => {
+      const visible = entries.filter(e => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if(visible.length) setActive(visible[0].target.id);
+    }, {rootMargin: "-12% 0px -55% 0px", threshold: 0});
+    sections.forEach(s => io.observe(s));
+  } catch(err) {}
+})();
