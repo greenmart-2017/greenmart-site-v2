@@ -1,4 +1,4 @@
-document.getElementById("hamburger").addEventListener("click", function(){
+document.getElementById("hamburger")?.addEventListener("click", function(){
   document.getElementById("mobileMenu").classList.toggle("show");
   this.classList.toggle("open");
 });
@@ -14,20 +14,55 @@ document.querySelectorAll(".ftab").forEach(tab => {
 
 /* ── Sticky nav shrink-on-scroll ── */
 (function(){
-  const nav = document.querySelector("nav");
-  if(!nav) return;
-  let ticking = false;
-  function update(){
-    nav.classList.toggle("nav-compact", window.scrollY > 60);
-    ticking = false;
-  }
-  window.addEventListener("scroll", () => {
-    if(!ticking){
-      ticking = true;
-      requestAnimationFrame(update);
+  try {
+    const nav = document.querySelector("nav");
+    if(!nav) return;
+    let ticking = false;
+    function update(){
+      nav.classList.toggle("nav-compact", window.scrollY > 60);
+      ticking = false;
     }
-  }, {passive: true});
-  update();
+    window.addEventListener("scroll", () => {
+      if(!ticking){
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }, {passive: true});
+    update();
+  } catch(err) {}
+})();
+
+/* ── Mobile sticky WhatsApp CTA (after scrolling past primary button) ── */
+(function(){
+  try {
+    const cta = document.querySelector(".cta-row .btn-wa");
+    const bar = document.querySelector(".mobile-bar");
+    const barLink = bar?.querySelector("a");
+    if(!cta || !bar || !barLink) return;
+    barLink.href = cta.href;
+    if(cta.target) barLink.target = cta.target;
+    if(cta.rel) barLink.rel = cta.rel;
+    const mq = window.matchMedia("(max-width:760px)");
+    function isMobile(){ return mq.matches || window.innerWidth <= 760; }
+    function update(){
+      if(!isMobile()){
+        bar.classList.remove("is-visible");
+        bar.style.display = "";
+        document.body.classList.remove("has-mobile-cta-bar");
+        bar.setAttribute("aria-hidden", "true");
+        return;
+      }
+      bar.style.display = "block";
+      const past = cta.getBoundingClientRect().bottom < 0;
+      bar.classList.toggle("is-visible", past);
+      document.body.classList.toggle("has-mobile-cta-bar", past);
+      bar.setAttribute("aria-hidden", past ? "false" : "true");
+    }
+    window.addEventListener("scroll", update, {passive: true});
+    window.addEventListener("resize", update);
+    mq.addEventListener("change", update);
+    update();
+  } catch(err) {}
 })();
 
 /* ── Language translator (EN/HI/MR) — see /assets/product-i18n.js ── */
