@@ -1,3 +1,8 @@
+# connect-src still includes https://docs.google.com (and historically
+# https://*.googleusercontent.com if it were listed) so the Google Sheet CSV
+# fetch can be confirmed fully retired before those origins are removed.
+# Same-origin /api/* is already allowed via connect-src 'self'. No CSP change
+# is required for the admin panel or shop-data API.
 /*
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
