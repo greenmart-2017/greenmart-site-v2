@@ -3,7 +3,6 @@
    ═══════════════════════════════════════════ */
 const CONFIG = {
   phone: "918600632420",          // Green Mart WhatsApp
-  sheetCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSdTt3Jh-NJbAdx29wBO7WXliCCEJadz8IJOJff0Wg9ahJVpXIKS5zGg8otlxcmH9sHJnfU20HTWsMJ/pub?output=csv", // Green Mart live sheet
   businessName: "Green Mart"
 };
 
@@ -161,44 +160,79 @@ function showRatesShimmer(rowCount){
   }
 }
 
-if(CONFIG.sheetCsvUrl){
+function renderAvailability(items){
+  const box = document.getElementById("availInner");
+  if(!box) return;
+  box.querySelectorAll(".avail-item").forEach(e => e.remove());
+  items.forEach(([name, ok]) => {
+    const sp = document.createElement("span");
+    sp.className = "avail-item";
+    sp.textContent = (ok ? "✅ " : "❌ ") + name;
+    box.appendChild(sp);
+  });
+}
+
+function fillBulkSelect(bulk){
+  const sel = document.getElementById("c-sp");
+  if(!sel) return;
+  while(sel.firstChild) sel.removeChild(sel.firstChild);
+  Object.keys(bulk).forEach(k => {
+    const o = document.createElement("option");
+    o.value = k;
+    o.textContent = k;
+    sel.appendChild(o);
+  });
+}
+
+function zoneNum(zone, key, fallback){
+  const n = zone && typeof zone === "object" ? Number(zone[key]) : NaN;
+  return Number.isFinite(n) && n > 0 ? n : fallback;
+}
+
+function applyShopData(data){
+  if(!data || typeof data !== "object") return;
+  if(Array.isArray(data.rates) && data.rates.length){
+    CONFIG.rates = data.rates;
+    renderRatesTable(CONFIG.rates);
+  }
+  if(typeof data.ratesUpdated === "string" && data.ratesUpdated){
+    CONFIG.ratesUpdated = data.ratesUpdated;
+    const el = document.getElementById("ratesDate");
+    if(el) el.textContent = data.ratesUpdated;
+  }
+  if(Array.isArray(data.availability) && data.availability.length){
+    CONFIG.availability = data.availability;
+    renderAvailability(CONFIG.availability);
+  }
+  if(data.bulkRates && typeof data.bulkRates === "object" && Object.keys(data.bulkRates).length){
+    CONFIG.bulkRates = data.bulkRates;
+    fillBulkSelect(CONFIG.bulkRates);
+  }
+  if(data.deliveryZones && typeof data.deliveryZones === "object"){
+    const next = Object.assign({}, CONFIG.deliveryZones);
+    ["city","out","near"].forEach(id => {
+      if(data.deliveryZones[id] && typeof data.deliveryZones[id] === "object"){
+        next[id] = Object.assign({}, CONFIG.deliveryZones[id], data.deliveryZones[id]);
+      }
+    });
+    CONFIG.deliveryZones = next;
+  }
+}
+
+(function loadShopData(){
   let ratesSettled = false;
   const shimmerTimer = setTimeout(() => {
     if(!ratesSettled) showRatesShimmer(8);
   }, 300);
-  fetch(CONFIG.sheetCsvUrl, {cache:"no-store"})
-    .then(r => r.text())
-    .then(csv => {
-      const rows = csv.trim().split(/\r?\n/).map(line => line.split(",").map(c => c.trim()));
-      const rates = [], avail = [], bulk = {};
-      let updated = null;
-      rows.slice(1).forEach(r => {
-        const [section, name, unit, value, available] = r;
-        if(!section || !name) return;
-        const s = section.toLowerCase();
-        if(s === "rate")  rates.push([name, unit || "", value || ""]);
-        if(s === "avail") avail.push([name, (available||"").toLowerCase().startsWith("y")]);
-        if(s === "bulk")  bulk[name] = parseFloat(value) || 0;
-        if(s === "meta" && name.toLowerCase() === "updated") updated = value;
-      });
-      renderRatesTable(rates.length ? rates : CONFIG.rates);
-      if(updated) document.getElementById("ratesDate").textContent = updated;
-      if(avail.length){
-        const box = document.getElementById("availInner");
-        box.querySelectorAll(".avail-item").forEach(e => e.remove());
-        avail.forEach(([name, ok]) => {
-          const sp = document.createElement("span");
-          sp.className = "avail-item";
-          sp.textContent = (ok ? "✅ " : "❌ ") + name;
-          box.appendChild(sp);
-        });
-      }
-      if(Object.keys(bulk).length){
-        CONFIG.bulkRates = bulk;
-        const sel = document.getElementById("c-sp");
-        if(sel){ sel.innerHTML = "";
-          Object.keys(bulk).forEach(k => { const o = document.createElement("option"); o.value = k; o.textContent = k; sel.appendChild(o); });
-        }
+  fetch("/api/shop-data", {cache:"no-store"})
+    .then(r => {
+      if(!r.ok) throw new Error("shop-data");
+      return r.json();
+    })
+    .then(data => {
+      applyShopData(data);
+      if(!data || !Array.isArray(data.rates) || !data.rates.length){
+        renderRatesTable(CONFIG.rates);
       }
     })
     .catch(() => { renderRatesTable(CONFIG.rates); })
@@ -206,9 +240,7 @@ if(CONFIG.sheetCsvUrl){
       ratesSettled = true;
       clearTimeout(shimmerTimer);
     });
-}else{
-  renderRatesTable(CONFIG.rates);
-}
+})();
 document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
 
 /* ── Scroll reveal ── */
@@ -860,10 +892,29 @@ function estimate(){
   const wt = parseFloat(document.getElementById("d-wt").value) || 0;
   const out = document.getElementById("d-out");
   if(wt <= 0){ document.getElementById("d-wt").classList.add("invalid"); toast("Enter order quantity in kg.", "err"); return; }
+  const dz = CONFIG.deliveryZones || {};
   let cost, note="";
-  if(zone==="city"){ cost = wt>=50 ? "FREE" : "₹80"; note = wt>=50 ? "Free — order is 50 kg+" : "Free on 50 kg+ orders"; }
-  else if(zone==="out"){ cost = wt>=200 ? "FREE" : "₹150"; note = wt>=200 ? "Free — order is 200 kg+" : "Flat rate · free on 200 kg+"; }
-  else if(zone==="near"){ cost = "₹" + Math.max(300, Math.round(wt*4)); note = "₹4/kg, minimum ₹300"; }
+  if(zone==="city"){
+    const z = dz.city || {};
+    const freeAbove = zoneNum(z, "freeAboveKg", 50);
+    const flat = zoneNum(z, "flatRate", 80);
+    cost = wt>=freeAbove ? "FREE" : ("₹" + flat);
+    note = wt>=freeAbove ? ("Free — order is " + freeAbove + " kg+") : ("Free on " + freeAbove + " kg+ orders");
+  }
+  else if(zone==="out"){
+    const z = dz.out || {};
+    const freeAbove = zoneNum(z, "freeAboveKg", 200);
+    const flat = zoneNum(z, "flatRate", 150);
+    cost = wt>=freeAbove ? "FREE" : ("₹" + flat);
+    note = wt>=freeAbove ? ("Free — order is " + freeAbove + " kg+") : ("Flat rate · free on " + freeAbove + " kg+");
+  }
+  else if(zone==="near"){
+    const z = dz.near || {};
+    const perKg = zoneNum(z, "perKgRate", 4);
+    const min = zoneNum(z, "minRate", 300);
+    cost = "₹" + Math.max(min, Math.round(wt*perKg));
+    note = "₹" + perKg + "/kg, minimum ₹" + min;
+  }
   else { cost = "Quote on WhatsApp"; note = "Insulated/reefer transport — we'll quote for your city"; }
   const zoneName = document.getElementById("d-zone").selectedOptions[0].text;
   out.classList.add("show");
@@ -938,15 +989,12 @@ CONFIG.availability = [            // 👈 true = available, false = not today
   ["Tilapia", true],
   ["Murrel", false]
 ];
-(function(){
-  const box = document.getElementById("availInner");
-  CONFIG.availability.forEach(([name, ok]) => {
-    const s = document.createElement("span");
-    s.className = "avail-item";
-    s.textContent = (ok ? "✅ " : "❌ ") + name;
-    box.appendChild(s);
-  });
-})();
+CONFIG.deliveryZones = {
+  city: { label: "Within City", freeAboveKg: 50, flatRate: 80 },
+  out: { label: "Outside City", freeAboveKg: 200, flatRate: 150 },
+  near: { label: "Nearby Districts", perKgRate: 4, minRate: 300 }
+};
+renderAvailability(CONFIG.availability);
 
 /* ── Bulk calculator (edit avg rates here) ── */
 CONFIG.bulkRates = {               // 👈 indicative avg ₹/kg — update with market
@@ -960,13 +1008,7 @@ CONFIG.bulkRates = {               // 👈 indicative avg ₹/kg — update with
   "Rawas (Indian Salmon)": 350,
   "Shilang": 200
 };
-(function(){
-  const sel = document.getElementById("c-sp");
-  if(!sel) return;
-  Object.keys(CONFIG.bulkRates).forEach(k => {
-    const o = document.createElement("option"); o.value = k; o.textContent = k; sel.appendChild(o);
-  });
-})();
+fillBulkSelect(CONFIG.bulkRates);
 function bulkCalc(){
   const sp = document.getElementById("c-sp").value;
   const kg = parseFloat(document.getElementById("c-kg").value) || 0;
@@ -997,7 +1039,7 @@ function confirmBulk(sp, kg, total){
 const rb = document.getElementById("reorderBtn");
 if(rb) rb.href = waLink("Hi Green Mart! 🔁 Repeat my usual order please — confirm today's rate.");
 
-/* ══ LIVE DATA FROM GOOGLE SHEET — rates load handled above when sheetCsvUrl is set ══ */
+/* ══ LIVE DATA FROM GET /api/shop-data — falls back to CONFIG defaults on failure ══ */
 
 /* ── Wire up buttons (moved off inline onclick= for CSP compliance) ── */
 document.querySelectorAll("[data-order]").forEach(btn => {

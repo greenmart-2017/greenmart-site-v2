@@ -1,0 +1,8 @@
+# Static site + Netlify Functions. Custom /api/* paths are declared on each
+# function via `export const config = { path }`.
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

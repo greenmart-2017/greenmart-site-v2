@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Green Mart — Shop data admin</title>
+<link rel="icon" type="image/png" href="images/branding/green-mart-favicon.png">
+<meta name="theme-color" content="#1B5E3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pine:#1B5E3A;
+  --leaf:#3FA060;
+  --foam:#F7FAF7;
+  --ink:#0E3B33;
+  --aqua:#2B8AA8;
+  --sand:#EDF4EE;
+  --white:#ffffff;
+  --wa:#25D366;
+  --display:'Fraunces',serif;
+  --body:'Outfit',sans-serif;
+  --radius:14px;
+  --shadow:0 8px 30px rgba(14,59,51,.10);
+  --danger:#b42318;
+  --touch:44px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  font-family:var(--body);
+  color:var(--ink);
+  background:var(--foam);
+  line-height:1.5;
+  padding-bottom:88px;
+}
+img{max-width:100%;display:block}
+button,input,select{font-family:var(--body)}
+h1{font-family:var(--display);font-size:1.45rem;line-height:1.2}
+.wrap{width:min(720px,100%);margin:0 auto;padding:16px}
+.top{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 0 18px;
+}
+.top img{width:36px;height:36px}
+.top p{font-size:.85rem;color:#5a7a70}
+.card{
+  background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;
+}
+label{display:block;font-weight:600;font-size:.88rem;margin-bottom:6px}
+input[type="text"],input[type="password"],input[type="number"]{
+  width:100%;min-height:var(--touch);padding:10px 12px;
+  border:1.5px solid #D5E3D9;border-radius:10px;font-size:16px;background:var(--foam);
+}
+input:focus{outline:2px solid var(--leaf);border-color:var(--leaf)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:var(--touch);min-width:var(--touch);
+  padding:10px 18px;border-radius:999px;font-weight:600;font-size:1rem;
+  border:none;cursor:pointer;
+}
+.btn:disabled{opacity:.65;cursor:not-allowed}
+.btn-primary{background:var(--pine);color:#fff;width:100%}
+.btn-ghost{background:#fff;color:var(--pine);border:1.5px solid var(--pine)}
+.btn-danger{background:#fff;color:var(--danger);border:1.5px solid #f0b4ae;min-width:var(--touch);padding:8px 12px}
+.btn-add{width:100%;margin-top:10px}
+.pw-wrap{position:relative}
+.pw-wrap input{padding-right:52px}
+.pw-toggle{
+  position:absolute;right:4px;top:50%;transform:translateY(-50%);
+  width:var(--touch);height:var(--touch);border:none;background:transparent;
+  color:var(--pine);cursor:pointer;border-radius:10px;
+}
+.pw-toggle:focus-visible{outline:2px solid var(--aqua)}
+.err{color:var(--danger);font-size:.9rem;min-height:1.3em;margin:10px 0}
+.hint{font-size:.82rem;color:#5a7a70;margin-top:10px}
+.hidden{display:none !important}
+.tabs{
+  display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;
+}
+.tab{
+  flex:1 1 calc(50% - 8px);
+  min-height:var(--touch);
+  border:1.5px solid #D5E3D9;background:#fff;border-radius:12px;
+  font-weight:600;font-size:.88rem;color:var(--ink);cursor:pointer;
+  padding:8px 10px;text-align:center;
+}
+.tab.is-on{background:var(--pine);color:#fff;border-color:var(--pine)}
+.tab small{display:block;font-weight:500;opacity:.8;font-size:.72rem}
+.row{
+  display:flex;flex-direction:column;gap:8px;
+  padding:12px 0;border-bottom:1px solid #E2EDE5;
+}
+.row-top{display:flex;gap:8px;align-items:flex-start}
+.row-top .grow{flex:1;min-width:0}
+.unit-price{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.inr{display:flex;align-items:stretch;min-width:0}
+.inr-pre{
+  display:flex;align-items:center;justify-content:center;
+  min-width:40px;min-height:var(--touch);padding:0 8px;
+  background:var(--sand);border:1.5px solid #D5E3D9;border-right:0;
+  border-radius:10px 0 0 10px;font-weight:700;color:var(--pine);
+}
+.inr input{border-radius:0 10px 10px 0}
+.avail-row{display:flex;gap:8px;align-items:center}
+.avail-row input[type="text"]{flex:1;min-width:0}
+.switch{
+  display:flex;align-items:center;gap:8px;min-height:var(--touch);
+  flex:0 0 auto;font-size:.85rem;font-weight:600;
+}
+.switch input{width:22px;height:22px;accent-color:var(--pine)}
+.zone-block{
+  background:var(--sand);border-radius:12px;padding:14px;margin-bottom:12px;
+}
+.zone-block h3{font-size:1rem;margin-bottom:10px}
+.field{margin-bottom:12px}
+.field:last-child{margin-bottom:0}
+.note{font-size:.85rem;color:#5a7a70;background:var(--sand);border-radius:10px;padding:12px}
+.save-bar{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;
+  background:#fff;border-top:1px solid rgba(27,94,58,.15);
+  box-shadow:0 -6px 20px rgba(14,59,51,.08);
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));
+}
+.save-inner{width:min(720px,100%);margin:0 auto;display:flex;flex-direction:column;gap:6px}
+.save-meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.8rem;color:#5a7a70}
+.save-bar .btn{width:100%}
+.save-bar.is-dirty .btn-primary{background:#0b3d24}
+.unsaved{color:#9a5b00;font-weight:700}
+.toast-wrap{position:fixed;top:12px;left:12px;right:12px;z-index:80;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--ink);color:#fff;padding:14px 16px;border-radius:12px;font-size:.92rem;box-shadow:var(--shadow)}
+.toast.err{background:var(--danger)}
+.toast.ok{background:var(--pine)}
+.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(min-width:640px){
+  .tab{flex:1 1 auto}
+  .save-inner{flex-direction:row;align-items:center}
+  .save-bar .btn{width:auto;min-width:180px}
+  .save-meta{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div id="toasts" class="toast-wrap" aria-live="polite"></div>
+
+<div class="wrap">
+  <header class="top">
+    <img src="images/branding/green-mart-favicon.png" alt="">
+    <div>
+      <h1>Shop data admin</h1>
+      <p>Rates, availability, bulk prices, delivery zones</p>
+    </div>
+  </header>
+
+  <section id="login-screen" class="card" aria-labelledby="login-title">
+    <h2 id="login-title" style="font-family:var(--display);font-size:1.2rem;margin-bottom:14px">Log in</h2>
+    <form id="login-form">
+      <label for="password">Password</label>
+      <div class="pw-wrap">
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button type="button" class="pw-toggle" id="pw-toggle" aria-label="Show password" aria-pressed="false">
+          <svg id="icon-eye" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg id="icon-eye-off" class="hidden" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.1A11 11 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-3.2 4.4"/><path d="M6.1 6.1C3.7 7.8 2 12 2 12a18 18 0 0 0 6.3 6.3"/></svg>
+        </button>
+      </div>
+      <p id="login-error" class="err" role="alert"></p>
+      <button type="submit" class="btn btn-primary" id="login-btn">Sign in</button>
+    </form>
+  </section>
+
+  <section id="editor-screen" class="hidden">
+    <div class="tabs" role="tablist" aria-label="Data sections">
+      <button type="button" class="tab is-on" role="tab" aria-selected="true" data-tab="rates" id="tab-rates">Rates <small id="count-rates">0 rates</small></button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="avail" id="tab-avail">Availability <small id="count-avail">0 items</small></button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="bulk" id="tab-bulk">Bulk rates <small id="count-bulk">0 species</small></button>
+      <button type="button" class="tab" role="tab" aria-selected="false" data-tab="zones" id="tab-zones">Delivery zones <small id="count-zones">3 zones</small></button>
+    </div>
+
+    <div id="panel-rates" class="card" role="tabpanel">
+      <div class="field">
+        <label for="rates-updated">Rates updated label</label>
+        <input id="rates-updated" type="text" maxlength="200" placeholder="22 Aug 2026">
+      </div>
+      <div id="rates-list"></div>
+      <button type="button" class="btn btn-ghost btn-add" id="add-rate">+ Add rate</button>
+    </div>
+
+    <div id="panel-avail" class="card hidden" role="tabpanel">
+      <div id="avail-list"></div>
+      <button type="button" class="btn btn-ghost btn-add" id="add-avail">+ Add item</button>
+    </div>
+
+    <div id="panel-bulk" class="card hidden" role="tabpanel">
+      <div id="bulk-list"></div>
+      <button type="button" class="btn btn-ghost btn-add" id="add-bulk">+ Add species</button>
+    </div>
+
+    <div id="panel-zones" class="card hidden" role="tabpanel">
+      <div class="zone-block" data-zone="city">
+        <h3>City</h3>
+        <div class="field">
+          <label for="z-city-label">Label</label>
+          <input id="z-city-label" type="text" maxlength="200">
+        </div>
+        <div class="field">
+          <label for="z-city-free">Free above (kg)</label>
+          <input id="z-city-free" type="text" inputmode="decimal" maxlength="12">
+        </div>
+        <div class="field">
+          <label for="z-city-flat">Flat rate</label>
+          <div class="inr"><span class="inr-pre">₹</span><input id="z-city-flat" type="text" inputmode="decimal" maxlength="12"></div>
+        </div>
+      </div>
+      <div class="zone-block" data-zone="out">
+        <h3>Outside city</h3>
+        <div class="field">
+          <label for="z-out-label">Label</label>
+          <input id="z-out-label" type="text" maxlength="200">
+        </div>
+        <div class="field">
+          <label for="z-out-free">Free above (kg)</label>
+          <input id="z-out-free" type="text" inputmode="decimal" maxlength="12">
+        </div>
+        <div class="field">
+          <label for="z-out-flat">Flat rate</label>
+          <div class="inr"><span class="inr-pre">₹</span><input id="z-out-flat" type="text" inputmode="decimal" maxlength="12"></div>
+        </div>
+      </div>
+      <div class="zone-block" data-zone="near">
+        <h3>Nearby districts</h3>
+        <div class="field">
+          <label for="z-near-label">Label</label>
+          <input id="z-near-label" type="text" maxlength="200">
+        </div>
+        <div class="field">
+          <label for="z-near-per">Per kg rate</label>
+          <div class="inr"><span class="inr-pre">₹</span><input id="z-near-per" type="text" inputmode="decimal" maxlength="12"></div>
+        </div>
+        <div class="field">
+          <label for="z-near-min">Minimum rate</label>
+          <div class="inr"><span class="inr-pre">₹</span><input id="z-near-min" type="text" inputmode="decimal" maxlength="12"></div>
+        </div>
+      </div>
+      <p class="note">“Other city / Maharashtra” stays quote-only and is not editable here.</p>
+    </div>
+  </section>
+</div>
+
+<div id="save-bar" class="save-bar hidden">
+  <div class="save-inner">
+    <div class="save-meta">
+      <span id="dirty-label"></span>
+      <span id="last-saved"></span>
+    </div>
+    <button type="button" class="btn btn-primary" id="save-btn">Save changes</button>
+  </div>
+</div>
+
+<script src="assets/admin.js"></script>
+</body>
+</html>
