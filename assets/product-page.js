@@ -1,7 +1,18 @@
-document.getElementById("hamburger")?.addEventListener("click", function(){
-  document.getElementById("mobileMenu").classList.toggle("show");
-  this.classList.toggle("open");
-});
+/* Mobile hamburger — same aria-expanded behaviour as homepage */
+(function(){
+  const burger = document.getElementById("hamburger");
+  const mMenu = document.getElementById("mobileMenu");
+  if(!burger || !mMenu) return;
+  function setOpen(open){
+    mMenu.classList.toggle("show", open);
+    burger.classList.toggle("open", open);
+    burger.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  burger.addEventListener("click", () => {
+    setOpen(!mMenu.classList.contains("show"));
+  });
+  mMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => setOpen(false)));
+})();
 document.querySelectorAll(".ftab").forEach(tab => {
   tab.addEventListener("click", () => {
     const idx = tab.dataset.idx;
