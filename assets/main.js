@@ -106,9 +106,9 @@ mMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", (e) => {
   }
 }));
 
-/* ── Rates board (edit rates here) ── */
-CONFIG.ratesUpdated = "Today";           // 👈 change when you update rates e.g. "11 July 2026"
-CONFIG.rates = [                          // 👈 edit your rates here
+/* ── Rates board (fallback if GET /api/shop-data fails) ── */
+CONFIG.ratesUpdated = "Today";
+CONFIG.rates = [
   ["Fresh Pangas — 800g–1kg", "per kg", "₹110–120"],
   ["Fresh Pangas — 1–1.2kg", "per kg", "₹120–130"],
   ["Fresh Pangas — 1.2kg+", "per kg", "₹130–140"],
@@ -694,7 +694,7 @@ const D = {
 "Nagpur · Farm-Direct · Since 2017":["नागपुर · फार्म-डायरेक्ट · 2017 से","नागपूर · फार्म-डायरेक्ट · २०१७ पासून"],
 "Fresh from our farm.":["हमारे फार्म से ताज़ा।","आमच्या फार्ममधून ताजे."],
 "Straight to your business.":["सीधे आपके व्यवसाय तक।","थेट तुमच्या व्यवसायापर्यंत."],
-"Green Mart raises Pangasius (Basa), Rohu, Katla and other pond, dam & lake fish in our own aquaculture farms — supplying fresh fish, frozen fillets and agricultural goods across Nagpur & Maharashtra with honest weight and reliable bulk supply.":["ग्रीन मार्ट अपने प्रमाणित एक्वाकल्चर फार्म में पंगेसियस (बासा), रोहू, कतला और तालाब-झील की अन्य मछलियां पालता है — नागपुर व महाराष्ट्र में ताज़ी मछली, फ्रोज़न फ़िलेट व कृषि सामान की आपूर्ति, ईमानदार वजन और भरोसेमंद थोक सप्लाई के साथ।","ग्रीन मार्ट स्वतःच्या प्रमाणित मत्स्यपालन फार्ममध्ये पंगेशियस (बासा), रोहू, कतला आणि तलाव-धरणातील इतर मासे वाढवते — नागपूर व महाराष्ट्रात ताजे मासे, फ्रोझन फिलेट व शेतीमाल, प्रामाणिक वजन आणि भरवशाच्या पुरवठ्यासह."],
+"Green Mart raises Pangasius (Basa), Rohu, Katla and other pond, dam & lake fish in our own aquaculture farms — supplying fresh fish, frozen fillets and agricultural goods across Nagpur & Maharashtra with honest weight and reliable bulk supply.":["ग्रीन मार्ट अपने एक्वाकल्चर फार्म में पंगेसियस (बासा), रोहू, कतला और तालाब-झील की अन्य मछलियां पालता है — नागपुर व महाराष्ट्र में ताज़ी मछली, फ्रोज़न फ़िलेट व कृषि सामान की आपूर्ति, ईमानदार वजन और भरोसेमंद थोक सप्लाई के साथ।","ग्रीन मार्ट स्वतःच्या मत्स्यपालन फार्ममध्ये पंगेशियस (बासा), रोहू, कतला आणि तलाव-धरणातील इतर मासे वाढवते — नागपूर व महाराष्ट्रात ताजे मासे, फ्रोझन फिलेट व शेतीमाल, प्रामाणिक वजन आणि भरवशाच्या पुरवठ्यासह."],
 "Get today's rate":["आज का रेट पाएं","आजचा दर मिळवा"],
 "See products":["उत्पाद देखें","उत्पादने पहा"],
 "✓ Eco-friendly farming":["✓ पर्यावरण-हितैषी खेती","✓ पर्यावरणपूरक शेती"],
@@ -736,7 +736,7 @@ const D = {
 "Selenium + B12":["सेलेनियम + B12","सेलेनियम + B12"],
 "natural source":["प्राकृतिक स्रोत","नैसर्गिक स्रोत"],
 "unbroken cold chain":["अटूट कोल्ड चेन","अखंड कोल्ड चेन"],
-"certified & traceable":["प्रमाणित व ट्रेसेबल","प्रमाणित व ट्रेसेबल"],
+"certified & traceable":["ट्रेसेबल","ट्रेसेबल"],
 "🔔 Notify me on launch":["🔔 लॉन्च पर बताएं","🔔 लाँचला कळवा"],
 "Pack photo coming soon":["पैक फोटो जल्द","पॅक फोटो लवकरच"],
 "250g & 500g retail packs · 5kg/10kg bulk":["250ग्रा व 500ग्रा पैक · 5/10 किलो बल्क","२५०ग्रॅ व ५००ग्रॅ पॅक · ५/१० किलो बल्क"],
@@ -778,10 +778,11 @@ const D = {
 /* about */
 "Our story":["हमारी कहानी","आमची कहाणी"],
 "A family business, built on trust":["भरोसे पर बना पारिवारिक व्यवसाय","विश्वासावर उभा कौटुंबिक व्यवसाय"],
-"Green Mart is a family-run business from Nagpur, Maharashtra — working in agriculture, fisheries and goods since 2017. What started as a local venture has grown into a dedicated aquaculture operation raising Pangasius (Basa) in our own farm.":["ग्रीन मार्ट नागपुर का पारिवारिक व्यवसाय है — 2017 से कृषि, मत्स्य व सामान में। स्थानीय शुरुआत से आज हमारा अपना प्रमाणित मछली पालन फार्म है।","ग्रीन मार्ट हा नागपूरचा कौटुंबिक व्यवसाय आहे — २०१७ पासून शेती, मत्स्यव्यवसाय व वस्तूंमध्ये कार्यरत. स्थानिक सुरुवातीपासून आज आमचे स्वतःचे प्रमाणित मत्स्यपालन फार्म आहे."],
+"Green Mart is a family-run business from Nagpur, Maharashtra — working in agriculture, fisheries and goods since 2017. What started as a local venture has grown into a dedicated aquaculture operation raising Pangasius (Basa) in our own farm.":["ग्रीन मार्ट नागपुर का पारिवारिक व्यवसाय है — 2017 से कृषि, मत्स्य व सामान में। स्थानीय शुरुआत से आज हमारा अपना मछली पालन फार्म है।","ग्रीन मार्ट हा नागपूरचा कौटुंबिक व्यवसाय आहे — २०१७ पासून शेती, मत्स्यव्यवसाय व वस्तूंमध्ये कार्यरत. स्थानिक सुरुवातीपासून आज आमचे स्वतःचे मत्स्यपालन फार्म आहे."],
 "Now we're taking the next step — bringing locally processed, blast-frozen Basa fillet to Nagpur's stores and homes, so you never have to settle for months-old imported stock again.":["अब अगला कदम — स्थानीय स्तर पर प्रोसेस की गई, ताज़ा ब्लास्ट-फ्रोज़न बासा फ़िलेट नागपुर की दुकानों व घरों तक।","आता पुढचे पाऊल — स्थानिक पातळीवर प्रक्रिया केलेले, ताजे ब्लास्ट-फ्रोझन बासा फिलेट नागपूरच्या दुकानांत व घरांत."],
 "started":["शुरुआत","सुरुवात"],
 "certifications":["प्रमाणपत्र","प्रमाणपत्रे"],
+"applied for":["आवेदन में","अर्ज केले"],
 "farm-direct":["फार्म-डायरेक्ट","फार्म-डायरेक्ट"],
 "Family / farm photo coming soon":["परिवार / फार्म फोटो जल्द","कुटुंब / फार्म फोटो लवकरच"],
 /* testimonials */
@@ -790,7 +791,7 @@ const D = {
 "Consistent size and honest weight, every single time. Supply never breaks even in season rush.":["हर बार एक जैसा साइज़ और ईमानदार वजन। सीज़न में भी सप्लाई नहीं रुकती।","प्रत्येक वेळी सारखा साईझ आणि प्रामाणिक वजन. सीझनमध्येही पुरवठा थांबत नाही."],
 "Wholesale trader":["थोक व्यापारी","होलसेल व्यापारी"],
 "Nagpur fish market":["नागपुर मछली बाज़ार","नागपूर मासळी बाजार"],
-"Fresh maal, iced properly, delivered on our schedule. Certification papers were a plus for our kitchen audit.":["ताज़ा माल, सही बर्फ में, हमारे समय पर। किचन ऑडिट के लिए प्रमाणपत्र बड़ा फायदा।","ताजा माल, योग्य बर्फात, आमच्या वेळेवर. किचन ऑडिटसाठी प्रमाणपत्रे मोठा फायदा."],
+"Fresh maal, iced properly, delivered on our schedule.":["ताज़ा माल, सही बर्फ में, हमारे समय पर।","ताजा माल, योग्य बर्फात, आमच्या वेळेवर."],
 "Restaurant kitchen head":["रेस्टोरेंट किचन हेड","रेस्टॉरंट किचन हेड"],
 "Nagpur":["नागपुर","नागपूर"],
 "Farm-direct rate with no middleman drama. WhatsApp order to delivery is smooth.":["बिना बिचौलिए के फार्म-डायरेक्ट रेट। WhatsApp ऑर्डर से डिलीवरी तक आसान।","मधल्या दलालाशिवाय फार्म-डायरेक्ट दर. WhatsApp ऑर्डर ते डिलिव्हरी सोपे."],
@@ -980,8 +981,8 @@ function validate(ids){
 }
 document.addEventListener("input", e => { if(e.target.classList) e.target.classList.remove("invalid"); });
 
-/* ── Today's availability (edit here daily) ── */
-CONFIG.availability = [            // 👈 true = available, false = not today
+/* ── Today's availability (fallback if GET /api/shop-data fails) ── */
+CONFIG.availability = [            // true = available, false = not today
   ["Pangas", true],
   ["Rohu", true],
   ["Katla", true],
@@ -996,8 +997,8 @@ CONFIG.deliveryZones = {
 };
 renderAvailability(CONFIG.availability);
 
-/* ── Bulk calculator (edit avg rates here) ── */
-CONFIG.bulkRates = {               // 👈 indicative avg ₹/kg — update with market
+/* ── Bulk calculator (fallback avg ₹/kg if GET /api/shop-data fails) ── */
+CONFIG.bulkRates = {
   "Pangas (Basa)": 125,
   "Rohu": 160,
   "Katla": 180,
