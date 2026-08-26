@@ -9,7 +9,7 @@ business based in Nagpur, Maharashtra. Live at **greenmart.org.in**.
   Common Carp, Murrel/Catfish) and sourced coastal fish (Bangda, Rawas, Shilang)
 - Individual product pages with sizes, storage, delivery info, and WhatsApp ordering
 - Trilingual: English, Hindi (हिंदी), Marathi (मराठी)
-- Live rates and bulk calculator via a connected Google Sheet
+- Live rates, availability, bulk calculator, and delivery zones via `/api/shop-data` (admin panel / Netlify Blobs), with hardcoded CONFIG fallback
 - Wholesale/B2B enquiry flow for restaurants, hotels, and retailers
 
 ## Structure
