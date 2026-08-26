@@ -1,12 +1,10 @@
-# connect-src still includes https://docs.google.com (and historically
-# https://*.googleusercontent.com if it were listed) so the Google Sheet CSV
-# fetch can be confirmed fully retired before those origins are removed.
-# Same-origin /api/* is already allowed via connect-src 'self'. No CSP change
-# is required for the admin panel or shop-data API.
+# Google Sheet CSV fetch is retired (live data is GET /api/shop-data on 'self').
+# connect-src no longer includes https://docs.google.com.
+# script-src stays without 'unsafe-inline'.
 /*
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-src https://www.google.com; connect-src 'self' https://docs.google.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://wa.me
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; frame-src https://www.google.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://wa.me
