@@ -106,9 +106,9 @@ mMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", (e) => {
   }
 }));
 
-/* ── Rates board (edit rates here) ── */
-CONFIG.ratesUpdated = "Today";           // 👈 change when you update rates e.g. "11 July 2026"
-CONFIG.rates = [                          // 👈 edit your rates here
+/* ── Rates board (fallback if GET /api/shop-data fails) ── */
+CONFIG.ratesUpdated = "Today";
+CONFIG.rates = [
   ["Fresh Pangas — 800g–1kg", "per kg", "₹110–120"],
   ["Fresh Pangas — 1–1.2kg", "per kg", "₹120–130"],
   ["Fresh Pangas — 1.2kg+", "per kg", "₹130–140"],
@@ -980,8 +980,8 @@ function validate(ids){
 }
 document.addEventListener("input", e => { if(e.target.classList) e.target.classList.remove("invalid"); });
 
-/* ── Today's availability (edit here daily) ── */
-CONFIG.availability = [            // 👈 true = available, false = not today
+/* ── Today's availability (fallback if GET /api/shop-data fails) ── */
+CONFIG.availability = [            // true = available, false = not today
   ["Pangas", true],
   ["Rohu", true],
   ["Katla", true],
@@ -996,8 +996,8 @@ CONFIG.deliveryZones = {
 };
 renderAvailability(CONFIG.availability);
 
-/* ── Bulk calculator (edit avg rates here) ── */
-CONFIG.bulkRates = {               // 👈 indicative avg ₹/kg — update with market
+/* ── Bulk calculator (fallback avg ₹/kg if GET /api/shop-data fails) ── */
+CONFIG.bulkRates = {
   "Pangas (Basa)": 125,
   "Rohu": 160,
   "Katla": 180,
