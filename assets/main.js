@@ -335,6 +335,44 @@ document.getElementById("ratesDate").textContent = CONFIG.ratesUpdated;
   update();
 })();
 
+/* ── About photo slideshow (additive slides + matching dot nav) ── */
+(function(){
+  const box = document.querySelector(".about-photo");
+  const dotsWrap = document.querySelector(".about-dots");
+  if(!box || !dotsWrap) return;
+  const extraSlides = [
+    {src: "images/new-media/harvest-wide.jpg", alt: "Wide view of Green Mart harvest operations"},
+    {src: "images/new-media/delivery-truck-loading.jpg", alt: "Loading fish onto a Green Mart delivery truck"}
+  ];
+  extraSlides.forEach(slide => {
+    if(box.querySelector('img[src="' + slide.src + '"]')) return;
+    const img = document.createElement("img");
+    img.src = slide.src;
+    img.alt = slide.alt;
+    img.loading = "lazy";
+    box.appendChild(img);
+  });
+  const slides = Array.from(box.querySelectorAll("img"));
+  if(!slides.length) return;
+  slides.forEach((img, i) => img.classList.toggle("is-active", i === 0));
+  dotsWrap.replaceChildren();
+  slides.forEach((_, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "about-dot" + (i === 0 ? " is-active" : "");
+    btn.setAttribute("role", "tab");
+    btn.setAttribute("aria-label", "Show photo " + (i + 1));
+    btn.addEventListener("click", () => showSlide(i));
+    dotsWrap.appendChild(btn);
+  });
+  function showSlide(index){
+    slides.forEach((img, i) => img.classList.toggle("is-active", i === index));
+    dotsWrap.querySelectorAll(".about-dot").forEach((dot, i) => {
+      dot.classList.toggle("is-active", i === index);
+    });
+  }
+})();
+
 /* ── Gallery lightbox ── */
 (function(){
   try {
@@ -863,7 +901,16 @@ const D = {
 "Should I choose fresh or frozen?":["ताज़ी लें या फ्रोज़न?","ताजे घ्यावे की फ्रोझन?"],
 "Fresh is best if you're cooking soon. Frozen fillet is for stocking up — boneless, skinless, and blast-frozen. Confirm current pack availability on WhatsApp.":["जल्दी पकाना हो तो ताज़ी बेहतर। स्टॉक के लिए फ्रोज़न फ़िलेट — बिना कांटे, बिना छिलके, ब्लास्ट-फ्रोज़न। पैक उपलब्धता WhatsApp पर पूछें।","लवकर शिजवायचे असेल तर ताजे चांगले. साठवणुकीसाठी फ्रोझन फिलेट — काटे नसलेले, स्किनलेस, ब्लास्ट-फ्रोझन. पॅक उपलब्धता WhatsApp वर विचारा."],
 "Minimum order: confirm current business/wholesale minimums on WhatsApp · 1 pack (retail, once launched) · Payment: UPI / Cards / Netbanking via Razorpay":["न्यूनतम ऑर्डर: वर्तमान व्यवसाय/थोक न्यूनतम WhatsApp पर कन्फर्म करें · 1 पैक (रिटेल, लॉन्च के बाद) · भुगतान: UPI / कार्ड / नेट बैंकिंग (Razorpay)","किमान ऑर्डर: सध्याचे व्यवसाय/घाऊक किमान WhatsApp वर कन्फर्म करा · 1 पॅक (किरकोळ, लाँचनंतर) · पेमेंट: UPI / कार्ड / नेट बँकिंग (Razorpay)"],
-"LAUNCHING SOON":["जल्द आ रहा है","लवकरच"]
+"LAUNCHING SOON":["जल्द आ रहा है","लवकरच"],
+"From the farm":["फार्म से","फार्मवरून"],
+"See how we work":["देखें हम कैसे काम करते हैं","आम्ही कसे काम करतो ते पहा"],
+"Wide view of Green Mart harvest operations":["ग्रीन मार्ट कटाई का चौड़ा दृश्य","ग्रीन मार्ट काढणीचे विस्तीर्ण दृश्य"],
+"Loading fish onto a Green Mart delivery truck":["ग्रीन मार्ट डिलीवरी ट्रक पर मछली लोड करते हुए","ग्रीन मार्ट डिलिव्हरी ट्रकवर मासे लोड करताना"],
+"Green Mart team netting fish at harvest":["कटाई पर ग्रीन मार्ट टीम जाल से मछली निकालती हुई","काढणीवेळी ग्रीन मार्ट टीम जाळ्याने मासे काढताना"],
+"Weighing fish at the Green Mart station":["ग्रीन मार्ट स्टेशन पर मछली तौलते हुए","ग्रीन मार्ट स्टेशनवर मासे तोलताना"],
+"Green Mart team member at the farm":["फार्म पर ग्रीन मार्ट टीम सदस्य","फार्मवरील ग्रीन मार्ट टीम सदस्य"],
+"Video of Green Mart aquaculture and harvest work":["ग्रीन मार्ट एक्वाकल्चर व कटाई का वीडियो","ग्रीन मार्ट एक्वाकल्चर व काढणीचा व्हिडिओ"],
+"Your browser does not support the video tag. Watch farm work on WhatsApp with Green Mart.":["यह ब्राउज़र वीडियो नहीं चला सकता। ग्रीन मार्ट से WhatsApp पर फार्म कार्य देखें।","हा ब्राउझर व्हिडिओ चालवू शकत नाही. ग्रीन मार्टसोबत WhatsApp वर फार्मचे काम पहा."]
 };
 
 const IDX = {hi:0, mr:1};
