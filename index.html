@@ -83,6 +83,7 @@ section{padding:72px 0}
 
 /* ─────────── NAV ─────────── */
 nav{position:sticky;top:0;z-index:50;background:rgba(247,250,247,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(27,94,58,.10)}
+nav .nav-inner{width:min(1440px,96%)}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:1.35rem;color:var(--pine)}
 .logo svg{width:34px;height:34px}
@@ -131,7 +132,7 @@ nav{position:sticky;top:0;z-index:50;background:rgba(247,250,247,.92);backdrop-f
 .mobile-menu a{padding:13px 6px;font-weight:500;font-size:1.02rem;border-radius:8px}
 .mobile-menu a:active{background:var(--sand)}
 .mobile-menu.show{display:flex}
-@media(max-width:1080px){
+@media(max-width:1440px){
   .nav-links{display:none}
   .nav-cta{display:none}
   .hamburger{display:flex}
@@ -616,7 +617,7 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
     <div class="nav-links">
       <a href="#products">Products</a>
       <div class="nav-more">
-        <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false">Aquaculture Equipment <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></button>
+        <button class="nav-more-btn" aria-haspopup="true" aria-expanded="false">Equipment <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></button>
         <div class="nav-more-menu">
           <a href="solutions/floating-fish-farm-solutions.html">Floating Fish Farm Solutions</a>
           <a href="solutions/hdpe-floating-pontoons.html">HDPE Floating Pontoons</a>
@@ -636,12 +637,12 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
         </div>
       </div>
       <a href="#rates">Rates</a>
-      <a href="#wholesale">Wholesale</a>
       <a href="#certs">Certifications</a>
       <a href="#upcoming">Upcoming</a>
       <div class="nav-more">
         <button class="nav-more-btn" id="navMoreBtn" aria-haspopup="true" aria-expanded="false">More <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></button>
         <div class="nav-more-menu" id="navMoreMenu">
+          <a href="#wholesale">Wholesale</a>
           <a href="#delivery">Delivery</a>
           <a href="#how">How to Order</a>
           <a href="#pondtoplate">Lake to Plate</a>
@@ -1294,6 +1295,10 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
       <div class="gal-item"><img src="images/new-media/harvest-netting-action.jpg" alt="Green Mart team netting fish at harvest" loading="lazy"></div>
       <div class="gal-item"><img src="images/new-media/weighing-station.jpg" alt="Weighing fish at the Green Mart station" loading="lazy"></div>
       <div class="gal-item"><img src="images/new-media/worker-portrait.jpg" alt="Green Mart team member at the farm" loading="lazy"></div>
+      <div class="gal-item"><img src="images/solutions/floating-fish-farm-solutions-hero.jpg" alt="Floating fish farm setup — Green Mart" loading="lazy"></div>
+      <div class="gal-item"><img src="images/solutions/fish-farm-cage-systems-hero.jpg" alt="Fish farm cage systems on water" loading="lazy"></div>
+      <div class="gal-item"><img src="images/solutions/installation-and-commissioning-hero.jpg" alt="Green Mart installing floating pontoons on-site" loading="lazy"></div>
+      <div class="gal-item"><img src="images/solutions/floating-support-structures-hero.jpg" alt="Floating staff shelter and support structure" loading="lazy"></div>
     </div>
   </div>
 </section>
