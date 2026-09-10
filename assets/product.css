@@ -37,7 +37,7 @@ nav.nav-compact .logo{font-size:1rem}
 nav.nav-compact .logo img{width:27px;height:27px}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:1.25rem;color:var(--pine);white-space:nowrap}
 .logo img{width:34px;height:34px}
-.nav-links{display:flex;gap:22px;font-weight:500;font-size:.92rem}
+.nav-links{display:flex;gap:22px;font-weight:500;font-size:.92rem;flex-wrap:wrap;justify-content:flex-end}
 .nav-links a:hover{color:var(--leaf)}
 .hamburger{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:5px}
 .hamburger span{display:block;width:24px;height:2.5px;background:var(--pine);border-radius:2px;transition:transform .25s ease,opacity .25s ease}

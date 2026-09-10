@@ -866,6 +866,8 @@ const D = {
 "LAUNCHING SOON":["जल्द आ रहा है","लवकरच"]
 };
 
+if (window.GM_I18N_EXTRA) Object.assign(D, window.GM_I18N_EXTRA);
+
 const IDX = {hi:0, mr:1};
 let originals = null;   // [node, originalText]
 let phOriginals = null; // [el, originalPlaceholder]
@@ -1103,7 +1105,7 @@ if(wholesaleBtn) wholesaleBtn.addEventListener("click", wsEnquiry);
 /* ── Nav scroll-spy (highlight active section link) ── */
 (function(){
   try {
-    const sectionIds = ["products","rates","wholesale","certs","order","delivery","how","pondtoplate","about","fishcuts","traceability","gallery"];
+    const sectionIds = ["products","solutions","rates","wholesale","certs","order","delivery","how","pondtoplate","about","fishcuts","traceability","gallery"];
     const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
     if(!sections.length) return;
     const links = document.querySelectorAll('nav a[href^="#"]');

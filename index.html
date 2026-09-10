@@ -93,7 +93,7 @@ nav{position:sticky;top:0;z-index:50;background:rgba(247,250,247,.92);backdrop-f
 .nav-more-btn:hover{color:var(--leaf)}
 .nav-more-btn svg{transition:transform .15s}
 .nav-more.open .nav-more-btn svg{transform:rotate(180deg)}
-.nav-more-menu{display:none;position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%);background:#fff;border-radius:12px;box-shadow:0 12px 32px rgba(14,59,51,.18);padding:10px;min-width:180px;flex-direction:column;gap:2px;z-index:60}
+.nav-more-menu{display:none;position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%);background:#fff;border-radius:12px;box-shadow:0 12px 32px rgba(14,59,51,.18);padding:10px;min-width:280px;flex-direction:column;gap:2px;z-index:60}
 .nav-more.open .nav-more-menu{display:flex}
 .nav-more-menu a{padding:9px 14px;border-radius:8px;white-space:nowrap;font-size:.92rem}
 .nav-more-menu a:hover{background:var(--sand);color:var(--leaf)}
@@ -142,6 +142,10 @@ nav{position:sticky;top:0;z-index:50;background:rgba(247,250,247,.92);backdrop-f
 
 /* ─────────── PRODUCTS ─────────── */
 .prod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px;margin-top:38px}
+.sol-grid{display:grid;grid-template-columns:1fr;gap:26px;margin-top:38px}
+@media(min-width:560px){.sol-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.sol-grid{grid-template-columns:1fr 1fr 1fr}}
+.sol-section-sub{color:#3d5a52;max-width:42rem;margin-top:8px;font-weight:600}
 .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .18s ease}
 .card:hover{transform:translateY(-5px)}
 .card-head{height:120px;display:flex;align-items:center;justify-content:center;font-size:3rem}
@@ -579,11 +583,15 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
     <div class="nav-links">
       <a href="#products">Products</a>
       <a href="#rates">Rates</a>
+      <a href="#solutions" title="Floating Aquaculture &amp; Plastic Solutions">Solutions</a>
+      <a href="upcoming.html">Upcoming</a>
       <a href="#wholesale">Wholesale</a>
       <a href="#certs">Certifications</a>
       <div class="nav-more">
         <button class="nav-more-btn" id="navMoreBtn" aria-haspopup="true" aria-expanded="false">More <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></button>
         <div class="nav-more-menu" id="navMoreMenu">
+          <a href="#solutions">Floating Aquaculture &amp; Plastic Solutions</a>
+          <a href="upcoming.html">Upcoming</a>
           <a href="#delivery">Delivery</a>
           <a href="#how">How to Order</a>
           <a href="#pondtoplate">Lake to Plate</a>
@@ -607,6 +615,8 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
   <div class="container">
     <div class="mobile-menu" id="mobileMenu">
       <a href="#products">Products</a>
+      <a href="#solutions">Solutions</a>
+      <a href="upcoming.html">Upcoming</a>
       <a href="#rates">Today's Rates</a>
       <a href="#delivery">Delivery Cost</a>
       <a href="#wholesale">Wholesale</a>
@@ -740,7 +750,64 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
   </div>
 </section>
 
-
+<!-- FLOATING AQUACULTURE & PLASTIC SOLUTIONS -->
+<section id="solutions">
+  <div class="container">
+    <span class="eyebrow">HDPE pontoons · cages · walkways</span>
+    <h2 class="section-title">Floating Aquaculture &amp; Plastic Solutions</h2>
+    <p class="sol-section-sub">HDPE Pontoons • Cage Systems • Walkways • Platforms • Installation</p>
+    <div class="sol-grid">
+      <div class="card">
+        <div class="card-head h-live" style="padding:0;height:150px"><!-- {{IMAGE_SOLUTION_1}} --><img src="images/gallery/photo-coming-soon.webp" alt="Floating Fish Farm Solutions" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="card-body">
+          <h3>Floating Fish Farm Solutions</h3>
+          <p>Complete floating aquaculture infrastructure—from planning and pontoon supply to cage systems, walkways, support structures and on-site installation.</p>
+          <a href="solutions/floating-fish-farm-solutions.html" class="btn btn-ghost">Know More →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head h-live" style="padding:0;height:150px"><!-- {{IMAGE_SOLUTION_2}} --><img src="images/gallery/photo-coming-soon.webp" alt="HDPE Floating Pontoons" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="card-body">
+          <h3>HDPE Floating Pontoons</h3>
+          <p>Modular floating units for aquaculture cages, walkways, platforms and other suitable floating structures.</p>
+          <a href="solutions/hdpe-floating-pontoons.html" class="btn btn-ghost">Know More →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head h-live" style="padding:0;height:150px"><!-- {{IMAGE_SOLUTION_3}} --><img src="images/gallery/photo-coming-soon.webp" alt="Fish Farm Cage Systems" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="card-body">
+          <h3>Fish Farm Cage Systems</h3>
+          <p>Configurable floating cage infrastructure for organized and scalable cage-based aquaculture.</p>
+          <a href="solutions/fish-farm-cage-systems.html" class="btn btn-ghost">Know More →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head h-live" style="padding:0;height:150px"><!-- {{IMAGE_SOLUTION_4}} --><img src="images/gallery/photo-coming-soon.webp" alt="Walkways and Platforms" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="card-body">
+          <h3>Walkways &amp; Platforms</h3>
+          <p>Modular floating access systems designed to connect cages, work areas and floating facilities.</p>
+          <a href="solutions/walkways-and-platforms.html" class="btn btn-ghost">Know More →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head h-live" style="padding:0;height:150px"><!-- {{IMAGE_SOLUTION_5}} --><img src="images/gallery/photo-coming-soon.webp" alt="Floating Support Structures" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="card-body">
+          <h3>Floating Support Structures</h3>
+          <p>Custom floating platforms and support structures for day-to-day aquaculture operations.</p>
+          <a href="solutions/floating-support-structures.html" class="btn btn-ghost">Know More →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head h-live" style="padding:0;height:150px"><!-- {{IMAGE_SOLUTION_6}} --><img src="images/gallery/photo-coming-soon.webp" alt="Installation and Commissioning" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="card-body">
+          <h3>Installation &amp; Commissioning</h3>
+          <p>On-site support from layout and assembly through installation, checking and operational handover.</p>
+          <a href="solutions/installation-and-commissioning.html" class="btn btn-ghost">Know More →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- DAILY RATES -->
 <section class="rates" id="rates">
@@ -1269,6 +1336,8 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
         <h4>Quick links</h4>
         <div class="foot-links">
           <a href="#products">Products</a>
+          <a href="#solutions">Solutions</a>
+          <a href="upcoming.html">Upcoming</a>
           <a href="#certs">Certifications</a>
           <a href="#how">How to order</a>
           <a href="#order">Enquiry</a>
@@ -1305,6 +1374,7 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
   <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5s.8 1.9.8 2c.1.1.1.3 0 .5l-.4.6c-.1.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.5.3.1.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.4 0 .2 0 .8-.3 1.1z"/></svg>
 </a>
 
+<script src="assets/i18n-extra.js"></script>
 <script src="assets/main.js"></script>
 </body>
 </html>
