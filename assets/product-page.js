@@ -13,6 +13,24 @@
   });
   mMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => setOpen(false)));
 })();
+/* Scroll-reveal animations (shared with homepage) */
+(function(){
+  const els = document.querySelectorAll(".reveal, .reveal-stagger");
+  if(!els.length) return;
+  if(!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    els.forEach(e => e.classList.add("in"));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if(en.isIntersecting){
+        en.target.classList.add("in");
+        io.unobserve(en.target);
+      }
+    });
+  }, {threshold:.12, rootMargin:"0px 0px -60px 0px"});
+  els.forEach(e => io.observe(e));
+})();
 document.querySelectorAll(".ftab").forEach(tab => {
   tab.addEventListener("click", () => {
     const idx = tab.dataset.idx;

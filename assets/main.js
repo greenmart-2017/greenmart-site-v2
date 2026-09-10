@@ -67,6 +67,25 @@ document.getElementById("foot-wa").href  = waLink(genericMsg);
 document.getElementById("foot-call").href = `tel:+${CONFIG.phone}`;
 document.getElementById("yr").textContent = new Date().getFullYear();
 
+/* Scroll-reveal animations for sections & grids */
+(function(){
+  const els = document.querySelectorAll(".reveal, .reveal-stagger");
+  if(!els.length) return;
+  if(!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    els.forEach(e => e.classList.add("in"));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if(en.isIntersecting){
+        en.target.classList.add("in");
+        io.unobserve(en.target);
+      }
+    });
+  }, {threshold:.12, rootMargin:"0px 0px -60px 0px"});
+  els.forEach(e => io.observe(e));
+})();
+
 /* Mobile hamburger menu */
 const burger = document.getElementById("hamburger");
 const mMenu  = document.getElementById("mobileMenu");
@@ -76,20 +95,27 @@ burger.addEventListener("click", () => {
   burger.setAttribute("aria-expanded", open);
 });
 
-/* Desktop nav "More" dropdown */
+/* Desktop nav dropdowns ("More", "Aquaculture Equipment", "Agriculture", etc.) —
+   supports any number of .nav-more groups on the page */
 (function(){
-  const wrap = document.querySelector(".nav-more");
-  const btn = document.getElementById("navMoreBtn");
-  if(!wrap || !btn) return;
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const open = wrap.classList.toggle("open");
-    btn.setAttribute("aria-expanded", open);
+  const wraps = document.querySelectorAll(".nav-more");
+  if(!wraps.length) return;
+  wraps.forEach(wrap => {
+    const btn = wrap.querySelector(".nav-more-btn");
+    if(!btn) return;
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const willOpen = !wrap.classList.contains("open");
+      // close any other open dropdowns first
+      wraps.forEach(w => { if(w !== wrap){ w.classList.remove("open"); const b = w.querySelector(".nav-more-btn"); if(b) b.setAttribute("aria-expanded", false); } });
+      wrap.classList.toggle("open", willOpen);
+      btn.setAttribute("aria-expanded", willOpen);
+    });
+    wrap.querySelectorAll("a").forEach(a => a.addEventListener("click", () => wrap.classList.remove("open")));
   });
   document.addEventListener("click", (e) => {
-    if(!wrap.contains(e.target)) wrap.classList.remove("open");
+    wraps.forEach(wrap => { if(!wrap.contains(e.target)) wrap.classList.remove("open"); });
   });
-  wrap.querySelectorAll("a").forEach(a => a.addEventListener("click", () => wrap.classList.remove("open")));
 })();
 /* menu links: close menu, then scroll to section (JS-driven, always works) */
 mMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", (e) => {
