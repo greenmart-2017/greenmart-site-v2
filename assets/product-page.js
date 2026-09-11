@@ -136,12 +136,10 @@ document.querySelectorAll(".ftab").forEach(tab => {
 
 /* ── Lab-tested nutrition quantity scaler ── */
 (function(){
-  try {
-    document.querySelectorAll(".spec-nutrition").forEach(card => {
+  document.querySelectorAll(".spec-nutrition").forEach(card => {
+    try {
       if(!card.dataset.per100) return;
-      let per100;
-      try { per100 = JSON.parse(card.dataset.per100); }
-      catch(err) { return; }
+      const per100 = JSON.parse(card.dataset.per100);
       const btns = card.querySelectorAll(".nutri-qty-btn");
       function render(grams){
         card.querySelectorAll("[data-nutri]").forEach(el => {
@@ -162,6 +160,6 @@ document.querySelectorAll(".ftab").forEach(tab => {
         });
       });
       render(100);
-    });
-  } catch(err) {}
+    } catch(e) { console.error("Nutrition card data error:", e, card); }
+  });
 })();
