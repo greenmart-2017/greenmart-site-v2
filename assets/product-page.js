@@ -13,6 +13,62 @@
   });
   mMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => setOpen(false)));
 })();
+/* Scroll-reveal animations (shared with homepage) */
+(function(){
+  const els = document.querySelectorAll(".reveal, .reveal-stagger");
+  if(!els.length) return;
+  if(!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    els.forEach(e => e.classList.add("in"));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if(en.isIntersecting){
+        en.target.classList.add("in");
+        io.unobserve(en.target);
+      }
+    });
+  }, {threshold:.12, rootMargin:"0px 0px -60px 0px"});
+  els.forEach(e => io.observe(e));
+})();
+/* Image slider — auto-slide with arrows/dots, full uncropped images */
+document.querySelectorAll(".img-slider").forEach(slider => {
+  const track = slider.querySelector(".img-slider-track");
+  const slides = Array.from(slider.querySelectorAll(".img-slider-slide"));
+  const dots = Array.from(slider.querySelectorAll(".img-slider-dot"));
+  const prevBtn = slider.querySelector(".img-slider-arrow.prev");
+  const nextBtn = slider.querySelector(".img-slider-arrow.next");
+  if(slides.length < 2){
+    if(prevBtn) prevBtn.style.display = "none";
+    if(nextBtn) nextBtn.style.display = "none";
+    const dw = slider.querySelector(".img-slider-dots");
+    if(dw) dw.style.display = "none";
+    return;
+  }
+  let idx = 0;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function go(i){
+    idx = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(-${idx * 100}%)`;
+    dots.forEach((d, di) => d.classList.toggle("active", di === idx));
+  }
+  if(prevBtn) prevBtn.addEventListener("click", () => { go(idx - 1); restart(); });
+  if(nextBtn) nextBtn.addEventListener("click", () => { go(idx + 1); restart(); });
+  dots.forEach((d, di) => d.addEventListener("click", () => { go(di); restart(); }));
+  let timer = null;
+  function restart(){
+    if(reduced) return;
+    clearInterval(timer);
+    const delay = parseInt(slider.dataset.autoplay, 10) || 4500;
+    timer = setInterval(() => go(idx + 1), delay);
+  }
+  slider.addEventListener("mouseenter", () => clearInterval(timer));
+  slider.addEventListener("mouseleave", restart);
+  slider.addEventListener("focusin", () => clearInterval(timer));
+  slider.addEventListener("focusout", restart);
+  go(0);
+  restart();
+});
 document.querySelectorAll(".ftab").forEach(tab => {
   tab.addEventListener("click", () => {
     const idx = tab.dataset.idx;
