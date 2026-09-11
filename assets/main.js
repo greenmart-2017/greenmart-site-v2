@@ -993,7 +993,9 @@ const D = {
 "Weighing fish at the Green Mart station":["ग्रीन मार्ट स्टेशन पर मछली तौलते हुए","ग्रीन मार्ट स्टेशनवर मासे तोलताना"],
 "Green Mart team member at the farm":["फार्म पर ग्रीन मार्ट टीम सदस्य","फार्मवरील ग्रीन मार्ट टीम सदस्य"],
 "Video of Green Mart aquaculture and harvest work":["ग्रीन मार्ट एक्वाकल्चर व कटाई का वीडियो","ग्रीन मार्ट एक्वाकल्चर व काढणीचा व्हिडिओ"],
-"Your browser does not support the video tag. Watch farm work on WhatsApp with Green Mart.":["यह ब्राउज़र वीडियो नहीं चला सकता। ग्रीन मार्ट से WhatsApp पर फार्म कार्य देखें।","हा ब्राउझर व्हिडिओ चालवू शकत नाही. ग्रीन मार्टसोबत WhatsApp वर फार्मचे काम पहा."]
+"Your browser does not support the video tag. Watch farm work on WhatsApp with Green Mart.":["यह ब्राउज़र वीडियो नहीं चला सकता। ग्रीन मार्ट से WhatsApp पर फार्म कार्य देखें।","हा ब्राउझर व्हिडिओ चालवू शकत नाही. ग्रीन मार्टसोबत WhatsApp वर फार्मचे काम पहा."],
+"Lab-tested nutrition":["लैब-परीक्षित पोषण","लॅब-चाचणी पोषण"],
+"Independent composition analysis by Nagpur Veterinary College for our fish — see individual product pages for details.":["हमारी मछली का स्वतंत्र संरचना विश्लेषण नागपुर वेटरनरी कॉलेज द्वारा — विवरण के लिए संबंधित उत्पाद पृष्ठ देखें।","आमच्या माशांचे स्वतंत्र संरचना विश्लेषण नागपूर व्हेटरनरी कॉलेज द्वारे — तपशीलासाठी संबंधित उत्पादन पृष्ठ पहा."]
 };
 
 const IDX = {hi:0, mr:1};
