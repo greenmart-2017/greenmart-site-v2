@@ -1,0 +1,11 @@
+Hero image slots for seafood refresh. Replace data-image-slot / HTML comments once mapped.
+
+{{IMAGE_HERO_ROHU}} — products/rohu.html whole-fish hero (current src: rohu-whole.webp)
+{{IMAGE_HERO_ROHU_FILLET}} — products/rohu.html fillet subsection
+{{IMAGE_HERO_KATLA}} — products/katla.html
+{{IMAGE_HERO_MRIGAL}} — products/mrigal-tilapia-carp.html (Mrigal + steaks; page also covers Tilapia & Carp)
+{{IMAGE_HERO_PANGAS}} — products/pangas.html (farm-raised fish + fillets; current src: basa-whole-fillets.webp)
+{{IMAGE_HERO_SURMAI}} — products/rawas.html
+{{IMAGE_HERO_BANGDA}} — products/bangda.html
+
+No product pages yet for Pomfret, Prawns, or Crabs — not created.

@@ -1,0 +1,2 @@
+Solution page images live in /images/solutions/ (site convention).
+Map {{IMAGE_HERO}} and {{IMAGE_GALLERY_*}} comments in /solutions/*.html.

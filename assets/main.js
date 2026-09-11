@@ -996,6 +996,8 @@ const D = {
 "Your browser does not support the video tag. Watch farm work on WhatsApp with Green Mart.":["यह ब्राउज़र वीडियो नहीं चला सकता। ग्रीन मार्ट से WhatsApp पर फार्म कार्य देखें।","हा ब्राउझर व्हिडिओ चालवू शकत नाही. ग्रीन मार्टसोबत WhatsApp वर फार्मचे काम पहा."]
 };
 
+if (window.GM_I18N_EXTRA) Object.assign(D, window.GM_I18N_EXTRA);
+
 const IDX = {hi:0, mr:1};
 let originals = null;   // [node, originalText]
 let phOriginals = null; // [el, originalPlaceholder]
@@ -1233,7 +1235,7 @@ if(wholesaleBtn) wholesaleBtn.addEventListener("click", wsEnquiry);
 /* ── Nav scroll-spy (highlight active section link) ── */
 (function(){
   try {
-    const sectionIds = ["products","rates","wholesale","certs","order","delivery","how","pondtoplate","about","fishcuts","traceability","gallery"];
+    const sectionIds = ["products","solutions","rates","wholesale","certs","order","delivery","how","pondtoplate","about","fishcuts","traceability","gallery"];
     const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
     if(!sections.length) return;
     const links = document.querySelectorAll('nav a[href^="#"]');

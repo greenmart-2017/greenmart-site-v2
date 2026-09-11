@@ -84,7 +84,7 @@ section{padding:72px 0}
 /* ─────────── NAV ─────────── */
 nav{position:sticky;top:0;z-index:50;background:rgba(247,250,247,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(27,94,58,.10)}
 nav .nav-inner{width:min(1440px,96%)}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:14px}
 .logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:1.35rem;color:var(--pine)}
 .logo svg{width:34px;height:34px}
 .nav-links{display:flex;align-items:center;gap:22px;font-weight:500;font-size:.95rem}
@@ -94,7 +94,7 @@ nav .nav-inner{width:min(1440px,96%)}
 .nav-more-btn:hover{color:var(--leaf)}
 .nav-more-btn svg{transition:transform .15s}
 .nav-more.open .nav-more-btn svg{transform:rotate(180deg)}
-.nav-more-menu{display:none;position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%);background:#fff;border-radius:12px;box-shadow:0 12px 32px rgba(14,59,51,.18);padding:10px;min-width:180px;flex-direction:column;gap:2px;z-index:60}
+.nav-more-menu{display:none;position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%);background:#fff;border-radius:12px;box-shadow:0 12px 32px rgba(14,59,51,.18);padding:10px;min-width:280px;flex-direction:column;gap:2px;z-index:60}
 .nav-more.open .nav-more-menu{display:flex}
 .nav-more-menu a{padding:9px 14px;border-radius:8px;white-space:nowrap;font-size:.92rem}
 .nav-more-menu a:hover{background:var(--sand);color:var(--leaf)}
@@ -165,6 +165,10 @@ nav .nav-inner{width:min(1440px,96%)}
 
 /* ─────────── PRODUCTS ─────────── */
 .prod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:26px;margin-top:38px}
+.sol-grid{display:grid;grid-template-columns:1fr;gap:26px;margin-top:38px}
+@media(min-width:560px){.sol-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.sol-grid{grid-template-columns:1fr 1fr 1fr}}
+.sol-section-sub{color:#3d5a52;max-width:42rem;margin-top:8px;font-weight:600}
 .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .18s ease}
 .card:hover{transform:translateY(-5px)}
 .card-head{height:120px;display:flex;align-items:center;justify-content:center;font-size:3rem}
@@ -195,7 +199,7 @@ nav .nav-inner{width:min(1440px,96%)}
 .cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:34px}
 .cert{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:var(--radius);padding:22px}
 .cert b{display:block;font-size:1.05rem;color:#fff;margin-bottom:6px}
-.cert span{font-size:.88rem;color:#B9D6C8}
+.cert span,.cert p{font-size:.88rem;color:#B9D6C8}
 
 /* ─────────── HOW IT WORKS (signature) ─────────── */
 .flow{background:var(--sand)}
@@ -385,10 +389,12 @@ footer a:hover{color:#fff}
 .stat span{font-size:.85rem;color:#5a7a70}
 
 /* ─────────── LANG TOGGLE ─────────── */
-.lang-btn{background:var(--sand);border:1.5px solid rgba(27,94,58,.25);color:var(--pine);font-weight:700;font-size:.8rem;padding:7px 30px 7px 13px;border-radius:999px;cursor:pointer;font-family:var(--body);width:auto;flex-shrink:0;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%231B5E3A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+.lang-btn{background:var(--sand);border:1.5px solid rgba(27,94,58,.25);color:var(--pine);font-weight:700;font-size:.8rem;padding:7px 30px 7px 13px;border-radius:999px;cursor:pointer;font-family:var(--body);width:auto;flex-shrink:0;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%231B5E3A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;margin-left:auto}
+@media(min-width:1441px){
+  .lang-btn{margin-left:0}
+}
 .logo{white-space:nowrap}
 @media(max-width:760px){
-  .nav-inner{gap:8px}
   .logo{font-size:1.15rem}
   .logo img{width:32px !important;height:32px !important}
   .lang-btn{font-size:.74rem;padding:6px 24px 6px 10px;background-position:right 8px center}
@@ -905,7 +911,64 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
   </div>
 </section>
 
-
+<!-- FLOATING AQUACULTURE & PLASTIC SOLUTIONS -->
+<section id="solutions">
+  <div class="container">
+    <span class="eyebrow">HDPE pontoons · cages · walkways</span>
+    <h2 class="section-title">Floating Aquaculture &amp; Plastic Solutions</h2>
+    <p class="sol-section-sub">HDPE Pontoons • Cage Systems • Walkways • Platforms • Installation</p>
+    <div class="sol-grid">
+      <div class="card">
+        <div class="card-head h-live" style="padding:0;height:150px"><!-- {{IMAGE_SOLUTION_1}} --><img src="images/gallery/photo-coming-soon.webp" alt="Floating Fish Farm Solutions" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="card-body">
+          <h3>Floating Fish Farm Solutions</h3>
+          <p>Complete floating aquaculture infrastructure—from planning and pontoon supply to cage systems, walkways, support structures and on-site installation.</p>
+          <a href="solutions/floating-fish-farm-solutions.html" class="btn btn-ghost">Know More →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head h-live" style="padding:0;height:150px"><!-- {{IMAGE_SOLUTION_2}} --><img src="images/gallery/photo-coming-soon.webp" alt="HDPE Floating Pontoons" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="card-body">
+          <h3>HDPE Floating Pontoons</h3>
+          <p>Modular floating units for aquaculture cages, walkways, platforms and other suitable floating structures.</p>
+          <a href="solutions/hdpe-floating-pontoons.html" class="btn btn-ghost">Know More →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head h-live" style="padding:0;height:150px"><!-- {{IMAGE_SOLUTION_3}} --><img src="images/gallery/photo-coming-soon.webp" alt="Fish Farm Cage Systems" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="card-body">
+          <h3>Fish Farm Cage Systems</h3>
+          <p>Configurable floating cage infrastructure for organized and scalable cage-based aquaculture.</p>
+          <a href="solutions/fish-farm-cage-systems.html" class="btn btn-ghost">Know More →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head h-live" style="padding:0;height:150px"><!-- {{IMAGE_SOLUTION_4}} --><img src="images/gallery/photo-coming-soon.webp" alt="Walkways and Platforms" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="card-body">
+          <h3>Walkways &amp; Platforms</h3>
+          <p>Modular floating access systems designed to connect cages, work areas and floating facilities.</p>
+          <a href="solutions/walkways-and-platforms.html" class="btn btn-ghost">Know More →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head h-live" style="padding:0;height:150px"><!-- {{IMAGE_SOLUTION_5}} --><img src="images/gallery/photo-coming-soon.webp" alt="Floating Support Structures" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="card-body">
+          <h3>Floating Support Structures</h3>
+          <p>Custom floating platforms and support structures for day-to-day aquaculture operations.</p>
+          <a href="solutions/floating-support-structures.html" class="btn btn-ghost">Know More →</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head h-live" style="padding:0;height:150px"><!-- {{IMAGE_SOLUTION_6}} --><img src="images/gallery/photo-coming-soon.webp" alt="Installation and Commissioning" style="width:100%;height:100%;object-fit:cover" loading="lazy"></div>
+        <div class="card-body">
+          <h3>Installation &amp; Commissioning</h3>
+          <p>On-site support from layout and assembly through installation, checking and operational handover.</p>
+          <a href="solutions/installation-and-commissioning.html" class="btn btn-ghost">Know More →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- DAILY RATES -->
 <section class="rates" id="rates">
@@ -1239,6 +1302,10 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
       <div class="cert"><b>ISO 9001 <span style="font-size:.7rem;color:#7FD09A;font-weight:600">(applied)</span></b><span>Quality management — consistent processes from farm to dispatch. Certification application submitted, positive initial response received.</span></div>
       <div class="cert"><b>ISO 14001 <span style="font-size:.7rem;color:#7FD09A;font-weight:600">(applied)</span></b><span>Environmental management — responsible, eco-friendly aquaculture. Certification application submitted, positive initial response received.</span></div>
       <div class="cert"><b>HACCP <span style="font-size:.7rem;color:#7FD09A;font-weight:600">(applied)</span></b><span>Food safety — hazard-controlled handling & hygiene at every step. Certification application submitted, positive initial response received.</span></div>
+      <div class="cert">
+        <b>Lab-tested nutrition</b>
+        <p>Independent composition analysis by Nagpur Veterinary College for our fish — see individual product pages for details.</p>
+      </div>
       <div class="cert"><b>Farm-raised + sourced</b><span>Farm-raised Green Mart fish and trusted sourced supply. Product pages show which is which.</span></div>
     </div>
   </div>
@@ -1520,6 +1587,7 @@ nav.nav-compact .logo img{width:32px !important;height:32px !important}
   <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5s.8 1.9.8 2c.1.1.1.3 0 .5l-.4.6c-.1.2-.3.4-.1.7.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.5.3.1.5.1.7-.1l.9-1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.4 0 .2 0 .8-.3 1.1z"/></svg>
 </a>
 
+<script src="assets/i18n-extra.js"></script>
 <script src="assets/main.js"></script>
 </body>
 </html>

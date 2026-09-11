@@ -1,0 +1,6 @@
+Image slots for Floating Aquaculture & Plastic Solutions.
+Replace HTML comments {{IMAGE_HERO}}, {{IMAGE_GALLERY_1}}, {{IMAGE_GALLERY_2}}, {{IMAGE_GALLERY_3}}
+on each page in /solutions/ once final filenames are mapped.
+
+Temporary src uses ../images/gallery/photo-coming-soon.webp so pages do not 404.
+Site convention is /images/solutions/ (not /assets/images/).
