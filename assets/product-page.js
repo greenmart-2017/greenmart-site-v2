@@ -77,3 +77,31 @@ document.querySelectorAll(".ftab").forEach(tab => {
 })();
 
 /* ── Language translator (EN/HI/MR) — see /assets/product-i18n.js ── */
+
+/* ── Lab-tested nutrition quantity scaler ── */
+document.querySelectorAll(".spec-nutrition").forEach(card => {
+  if(!card.dataset.per100) return;
+  let per100;
+  try { per100 = JSON.parse(card.dataset.per100); }
+  catch(err) { return; }
+  const btns = card.querySelectorAll(".nutri-qty-btn");
+  function render(grams){
+    card.querySelectorAll("[data-nutri]").forEach(el => {
+      const key = el.dataset.nutri;
+      if(per100[key] == null) return;
+      const val = per100[key] * grams / 100;
+      const isMg = key === "calcium" || key === "phosphorus";
+      el.textContent = isMg
+        ? Math.round(val * 1000) + "mg"
+        : (Math.round(val * 10) / 10) + "g";
+    });
+  }
+  btns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      btns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      render(parseInt(btn.dataset.g, 10));
+    });
+  });
+  render(100);
+});
