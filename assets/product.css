@@ -29,7 +29,7 @@ section{padding:48px 0}
 .btn-wa{background:var(--wa);color:#fff}
 .btn-ghost{background:transparent;color:var(--pine);border:2px solid var(--pine)}
 nav{position:sticky;top:0;z-index:50;background:rgba(247,250,247,.94);backdrop-filter:blur(10px);border-bottom:1px solid rgba(27,94,58,.10);transition:background .25s ease}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;transition:padding .25s ease}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;transition:padding .25s ease;gap:14px}
 nav .logo{transition:font-size .25s ease}
 nav .logo img{transition:width .25s ease,height .25s ease}
 nav.nav-compact .nav-inner{padding:11px 0}
@@ -104,4 +104,29 @@ footer a{color:#7FD09A}
   .hero-band img,.rel-card .ico img{aspect-ratio:4/3}
 }
 @media(min-width:761px){.mobile-bar{display:none !important}}
-.lang-btn{background:var(--sand);border:1.5px solid rgba(27,94,58,.25);color:var(--pine);font-weight:700;font-size:.8rem;padding:7px 30px 7px 13px;border-radius:999px;cursor:pointer;font-family:var(--body);width:auto;flex-shrink:0;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%231B5E3A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;margin-left:4px}
+.lang-btn{background:var(--sand);border:1.5px solid rgba(27,94,58,.25);color:var(--pine);font-weight:700;font-size:.8rem;padding:7px 30px 7px 13px;border-radius:999px;cursor:pointer;font-family:var(--body);width:auto;flex-shrink:0;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%231B5E3A' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;margin-left:auto}
+@media(min-width:1441px){
+  .lang-btn{margin-left:4px}
+}
+.spec-nutrition{grid-column:1/-1;border:1.5px solid var(--leaf);display:flex;flex-direction:column;gap:12px}
+.spec-nutrition-extra{grid-column:1/-1;background:var(--sand);display:flex;flex-direction:column;gap:10px}
+.nutri-head{display:flex;align-items:center;gap:8px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--leaf);font-weight:700}
+.nutri-badge{font-size:.62rem;background:rgba(63,160,96,.12);color:var(--leaf);padding:2px 8px;border-radius:20px;font-weight:700;text-transform:none;letter-spacing:0}
+.nutri-qty{display:flex;gap:6px}
+.nutri-qty-btn{flex:1;padding:7px 0;border-radius:8px;border:1.5px solid rgba(27,94,58,.18);background:#fff;color:var(--ink);font-family:var(--body);font-weight:600;font-size:.78rem;cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease}
+.nutri-qty-btn.active,.nutri-qty-btn:hover{background:var(--leaf);color:#fff;border-color:var(--leaf)}
+.nutri-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:.85rem}
+.nutri-grid > div{display:flex;justify-content:space-between}
+.nutri-grid span{color:#43615a}
+.nutri-extra-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nutri-extra-grid div{display:flex;flex-direction:column;gap:2px}
+.nutri-extra-grid b{font-size:.85rem}
+.nutri-extra-grid span{font-size:.72rem;color:#7a8f85}
+.nutri-source{font-size:.72rem;color:#5a7a70}
+.nutri-disclaimer{font-size:.68rem;color:#9aada4}
+@media(max-width:480px){.nutri-qty-btn{font-size:.72rem;padding:6px 0}}
+.spec-nutrition b,.spec-nutrition-extra b{display:inline;text-transform:none;letter-spacing:0;margin-bottom:0;color:var(--ink)}
+.spec-nutrition .nutri-head span,.spec-nutrition-extra .nutri-head span{font-size:.72rem;font-weight:700;color:var(--leaf);letter-spacing:.06em;text-transform:uppercase}
+.spec-nutrition .nutri-grid span,.spec-nutrition-extra .nutri-extra-grid span{font-weight:500}
+.spec-nutrition .nutri-grid b{font-size:.85rem;font-weight:700}
+.spec-nutrition .nutri-badge{text-transform:none;letter-spacing:0;font-size:.62rem}
